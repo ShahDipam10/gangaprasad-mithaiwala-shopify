@@ -1,75 +1,104 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
-          }
-        },
-        "button": {
-          "type": "buttons",
-          "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "heading",
-        "button"
-      ],
+    "hero": {
+      "type": "hero-showcase",
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
-      }
+        "eyebrow": "Since 1919 · Anand, Gujarat",
+        "heading": "Three generations of Anand's sweetest mornings",
+        "subheading": "Fresh cow's milk, small daily batches, no preservatives — mithai made the way Gangaprasad started it, a century ago.",
+        "button_label": "Shop Sweets",
+        "button_link": "shopify://collections/sweets",
+        "button_label_2": "Festival Specials",
+        "button_link_2": "shopify://collections/festival-specials",
+        "change_slides_speed": 5
+      },
+      "blocks": {
+        "slide-1": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951" } },
+        "slide-2": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524950" } },
+        "slide-3": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Mithai_for_Diwali_and_other_Festivals_of_India_ed078828-cfea-4429-8d2e-7f65f683b7f3.jpg?v=1785524950" } },
+        "slide-4": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Picture_of_tasty_Kaju_katli_9b0d744e-80d6-439d-adac-22a010abed1e.jpg?v=1785524951" } }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3", "slide-4"]
     },
-    "featured_collection": {
+    "categories": {
+      "type": "collection-list",
+      "settings": {
+        "title": "Shop by Category",
+        "heading_size": "h1",
+        "image_ratio": "portrait",
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 40,
+        "padding_bottom": 12
+      },
+      "blocks": {
+        "cat-sweets": { "type": "featured_collection", "settings": { "collection": "sweets" } },
+        "cat-namkeen": { "type": "featured_collection", "settings": { "collection": "namkeen" } },
+        "cat-festival": { "type": "featured_collection", "settings": { "collection": "festival-specials" } }
+      },
+      "block_order": ["cat-sweets", "cat-namkeen", "cat-festival"]
+    },
+    "bestsellers": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
+        "title": "Bestsellers",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
-        "description_style": "body",
-        "collection": "all",
+        "collection": "bestsellers",
         "products_to_show": 8,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
         "full_width": false,
         "show_view_all": true,
-        "view_all_style": "solid",
+        "view_all_style": "link",
         "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": true,
+        "swipe_on_mobile": true,
+        "image_ratio": "square",
+        "show_secondary_image": false,
         "show_vendor": false,
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
-        "padding_top": 44,
+        "padding_top": 12,
         "padding_bottom": 36
+      }
+    },
+    "occasions": {
+      "type": "occasion-showcase",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Shop by Occasion",
+        "padding_top": 12,
+        "padding_bottom": 40
+      },
+      "blocks": {
+        "occ-wedding": { "type": "occasion", "settings": { "label": "Wedding Gifting", "description": "Curated boxes for the big day.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Picture_of_tasty_Kaju_katli_9b0d744e-80d6-439d-adac-22a010abed1e.jpg?v=1785524951", "link": "shopify://collections/festival-specials" } },
+        "occ-corporate": { "type": "occasion", "settings": { "label": "Corporate Gifting", "description": "Bulk orders, branded packaging.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Mithai_for_Diwali_and_other_Festivals_of_India_ed078828-cfea-4429-8d2e-7f65f683b7f3.jpg?v=1785524950", "link": "shopify://collections/festival-specials" } },
+        "occ-festival": { "type": "occasion", "settings": { "label": "Festival Hampers", "description": "Diwali, Rakhi and more.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Diwali_Mithai_India_b528dbe6-696f-42a3-a175-5a0a72616c64.jpg?v=1785524950", "link": "shopify://collections/festival-specials" } },
+        "occ-everyday": { "type": "occasion", "settings": { "label": "Everyday Treats", "description": "A little sweetness, any day.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524950", "link": "shopify://collections/sweets" } }
+      },
+      "block_order": ["occ-wedding", "occ-corporate", "occ-festival", "occ-everyday"]
+    },
+    "story": {
+      "type": "story-split",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951",
+        "image_position": "left",
+        "eyebrow": "Our Story",
+        "heading": "Founded in 1919, in India's dairy capital",
+        "body": "<p>Gangaprasad opened his first mithai counter in Anand's dairy market using milk collected that same morning. Three generations later, the recipe book — and the daily-batch discipline — hasn't changed.</p>",
+        "button_label": "Read our full story",
+        "button_link": "/pages/about",
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     }
   },
-  "order": [
-    "image_banner",
-    "featured_collection"
-  ]
+  "order": ["hero", "categories", "bestsellers", "occasions", "story"]
 }

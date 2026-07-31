@@ -1,0 +1,183 @@
+{%- style -%}
+  #HeroShowcase-{{ section.id }} {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  #HeroShowcase-{{ section.id }} .hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+  }
+  #HeroShowcase-{{ section.id }} .hero-slide.is-active {
+    opacity: 1;
+  }
+  #HeroShowcase-{{ section.id }} .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(42,27,20,0.15) 0%, rgba(42,27,20,0.88) 100%);
+  }
+  #HeroShowcase-{{ section.id }} .hero-content {
+    position: relative;
+    z-index: 1;
+    padding: 40px 20px 30px;
+    max-width: 640px;
+  }
+  #HeroShowcase-{{ section.id }} .hero-eyebrow {
+    font-family: var(--font-body-family);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  #HeroShowcase-{{ section.id }} .hero-heading {
+    font-size: 2.6rem;
+    line-height: 1.1;
+    margin: 0 0 14px;
+    text-wrap: pretty;
+  }
+  #HeroShowcase-{{ section.id }} .hero-sub {
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 22px;
+    max-width: 46ch;
+  }
+  #HeroShowcase-{{ section.id }} .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #HeroShowcase-{{ section.id }} .hero-dots {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    padding-bottom: 18px;
+  }
+  #HeroShowcase-{{ section.id }} .hero-dot {
+    cursor: pointer;
+    width: 6px;
+    height: 6px;
+    border-radius: 3px;
+    border: none;
+    padding: 0;
+    background: rgba(243,231,210,0.5);
+  }
+  #HeroShowcase-{{ section.id }} .hero-dot.is-active {
+    width: 22px;
+    background: rgb(var(--color-button));
+  }
+  @media screen and (min-width: 750px) {
+    #HeroShowcase-{{ section.id }} { min-height: 620px; }
+    #HeroShowcase-{{ section.id }} .hero-heading { font-size: 4.2rem; }
+    #HeroShowcase-{{ section.id }} .hero-content { padding: 0 20px 76px; margin: 0 auto; }
+  }
+{%- endstyle -%}
+
+<hero-showcase id="HeroShowcase-{{ section.id }}" class="color-{{ section.settings.color_scheme }}" data-interval="{{ section.settings.change_slides_speed | times: 1000 }}">
+  {%- for block in section.blocks -%}
+    <div class="hero-slide{% if forloop.first %} is-active{% endif %}" style="background-image:url('{{ block.settings.image_url }}');" {{ block.shopify_attributes }}></div>
+  {%- endfor -%}
+  <div class="hero-scrim"></div>
+  <div class="hero-content">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="hero-eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h1 class="hero-heading">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if section.settings.subheading != blank -%}
+      <p class="hero-sub">{{ section.settings.subheading }}</p>
+    {%- endif -%}
+    <div class="hero-actions">
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link }}" class="button">{{ section.settings.button_label }}</a>
+      {%- endif -%}
+      {%- if section.settings.button_label_2 != blank -%}
+        <a href="{{ section.settings.button_link_2 }}" class="button button--secondary">{{ section.settings.button_label_2 }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if section.blocks.size > 1 -%}
+    <div class="hero-dots">
+      {%- for block in section.blocks -%}
+        <button type="button" class="hero-dot{% if forloop.first %} is-active{% endif %}" aria-label="{{ 'sections.slideshow.load_slide' | t }} {{ forloop.index }}"></button>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</hero-showcase>
+
+<script>
+  class HeroShowcase extends HTMLElement {
+    connectedCallback() {
+      this.slides = Array.from(this.querySelectorAll('.hero-slide'));
+      this.dots = Array.from(this.querySelectorAll('.hero-dot'));
+      this.index = 0;
+      const interval = parseInt(this.dataset.interval, 10) || 4500;
+      if (this.slides.length > 1) {
+        this.timer = setInterval(() => this.go(this.index + 1), interval);
+        this.dots.forEach((dot, i) => dot.addEventListener('click', () => { this.go(i); this.resetTimer(interval); }));
+      }
+    }
+    go(i) {
+      this.index = (i + this.slides.length) % this.slides.length;
+      this.slides.forEach((s, idx) => s.classList.toggle('is-active', idx === this.index));
+      this.dots.forEach((d, idx) => d.classList.toggle('is-active', idx === this.index));
+    }
+    resetTimer(interval) {
+      clearInterval(this.timer);
+      this.timer = setInterval(() => this.go(this.index + 1), interval);
+    }
+    disconnectedCallback() {
+      clearInterval(this.timer);
+    }
+  }
+  customElements.define('hero-showcase', HeroShowcase);
+</script>
+
+{% schema %}
+{
+  "name": "Hero showcase",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "default": "scheme-3", "label": "Color scheme" },
+    { "type": "text", "id": "eyebrow", "default": "Since 1919 · Anand, Gujarat", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "default": "Three generations of Anand's sweetest mornings", "label": "Heading" },
+    { "type": "textarea", "id": "subheading", "default": "Fresh cow's milk, small daily batches, no preservatives — mithai made the way Gangaprasad started it, a century ago.", "label": "Subheading" },
+    { "type": "text", "id": "button_label", "default": "Shop Sweets", "label": "Primary button label" },
+    { "type": "url", "id": "button_link", "label": "Primary button link" },
+    { "type": "text", "id": "button_label_2", "default": "Festival Specials", "label": "Secondary button label" },
+    { "type": "url", "id": "button_link_2", "label": "Secondary button link" },
+    { "type": "range", "id": "change_slides_speed", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5, "label": "Change slides every" }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        { "type": "text", "id": "image_url", "label": "Image URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero showcase",
+      "blocks": [
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" },
+        { "type": "slide" }
+      ]
+    }
+  ]
+}
+{% endschema %}
