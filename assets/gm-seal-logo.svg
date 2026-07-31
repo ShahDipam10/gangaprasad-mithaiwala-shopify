@@ -1,0 +1,7 @@
+<svg width="200" height="230" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="94" fill="#6B1229" stroke="#C9971F" stroke-width="4"/>
+  <circle cx="100" cy="100" r="77" fill="none" stroke="#C9971F" stroke-width="2.4"/>
+  <text x="100" y="118" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700" font-style="italic" fill="#F3E7D2">GM</text>
+  <line x1="62" y1="136" x2="138" y2="136" stroke="#C9971F" stroke-width="2.4"/>
+  <text x="100" y="205" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="700" letter-spacing="3" fill="#4A0C1C">EST. 1919</text>
+</svg>
