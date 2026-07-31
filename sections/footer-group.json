@@ -4,8 +4,28 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "brand": {
+          "type": "brand_information",
+          "settings": { "show_social": true }
+        },
+        "menu": {
+          "type": "link_list",
+          "settings": { "heading": "Quick links", "menu": "footer" }
+        },
+        "trust": {
+          "type": "trust_badges",
+          "settings": {
+            "heading": "Trusted Since 1919",
+            "items": "FSSAI Certified Kitchen\n3rd-Generation Family Run\nFresh Daily Batches, No Preservatives\nPan-India Shipping · COD Available"
+          }
+        },
+        "map": {
+          "type": "illustrative_map",
+          "settings": { "caption": "Anand, Gujarat — illustrative map" }
+        }
+      },
+      "block_order": ["brand", "menu", "trust", "map"],
       "settings": {
         "color_scheme": "scheme-3",
         "newsletter_enable": false,

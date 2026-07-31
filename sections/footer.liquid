@@ -25,6 +25,37 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .footer-trust-list__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 1.3rem;
+  }
+
+  .footer-trust-list__check {
+    color: rgb(var(--color-button));
+    flex-shrink: 0;
+  }
+
+  .footer-block__map {
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .footer-map__caption {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(42, 27, 20, 0.85);
+    color: #f3e7d2;
+    font-size: 1rem;
+    padding: 4px 8px;
+    border-radius: 3px;
+    z-index: 1;
+  }
 {%- endstyle -%}
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
@@ -103,6 +134,11 @@
                     {%- endif -%}
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
+                      {%- if settings.brand_image == blank -%}
+                        <div class="footer-block__image-wrapper" style="max-width: 90px; margin-bottom: 1rem;">
+                          {%- render 'brand-logo', width: 90 -%}
+                        </div>
+                      {%- endif -%}
                       {%- if settings.brand_image != blank -%}
                         {%- assign brand_image_height = settings.brand_image_width
                           | divided_by: settings.brand_image.aspect_ratio
@@ -152,6 +188,42 @@
                       {%- else -%}
                         {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
                       {%- endif -%}
+                    </div>
+                  {%- when 'trust_badges' -%}
+                    <div class="footer-block__trust-badges">
+                      {%- if block.settings.heading != blank -%}
+                        <h2 class="footer-block__heading inline-richtext">{{ block.settings.heading }}</h2>
+                      {%- endif -%}
+                      <ul class="footer-trust-list list-unstyled">
+                        {%- assign trust_lines = block.settings.items | newline_to_br | split: '<br />' -%}
+                        {%- for line in trust_lines -%}
+                          {%- assign trimmed_line = line | strip -%}
+                          {%- if trimmed_line != blank -%}
+                            <li class="footer-trust-list__item">
+                              <span class="footer-trust-list__check" aria-hidden="true">&#10003;</span>
+                              {{ trimmed_line }}
+                            </li>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- when 'illustrative_map' -%}
+                    <div class="footer-block__map">
+                      {%- if block.settings.caption != blank -%}
+                        <div class="footer-map__caption">{{ block.settings.caption }}</div>
+                      {%- endif -%}
+                      <svg viewBox="0 0 300 206" width="100%" height="auto" role="img" aria-label="{{ block.settings.caption | default: 'Illustrative map' | escape }}">
+                        <rect x="0" y="0" width="300" height="206" fill="#e8dfc8"></rect>
+                        <path d="M-10 40 L120 20 L180 55 L310 35" stroke="#c9bb92" stroke-width="10" fill="none"></path>
+                        <path d="M-10 120 L100 100 L160 140 L310 115" stroke="#c9bb92" stroke-width="14" fill="none"></path>
+                        <path d="M40 -10 L60 220" stroke="#c9bb92" stroke-width="8" fill="none"></path>
+                        <path d="M230 -10 L210 220" stroke="#c9bb92" stroke-width="8" fill="none"></path>
+                        <text x="130" y="30" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Vidyanagar Rd</text>
+                        <text x="20" y="112" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Station Rd</text>
+                        <text x="220" y="150" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Anand</text>
+                        <path d="M150 90C142 90 135 96.7 135 105c0 10.5 15 27 15 27s15-16.5 15-27c0-8.3-7-15-15-15z" fill="#B8341F"></path>
+                        <circle cx="150" cy="105" r="6" fill="#FBF4E8"></circle>
+                      </svg>
                     </div>
                 {%- endcase -%}
               </div>
@@ -378,6 +450,36 @@
           "id": "subtext",
           "default": "t:sections.footer.blocks.text.settings.subtext.default",
           "label": "t:sections.footer.blocks.text.settings.subtext.label"
+        }
+      ]
+    },
+    {
+      "type": "trust_badges",
+      "name": "Trust badges",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Trusted Since 1919",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "default": "FSSAI Certified Kitchen\n3rd-Generation Family Run\nFresh Daily Batches, No Preservatives\nPan-India Shipping · COD Available",
+          "label": "Items (one per line)"
+        }
+      ]
+    },
+    {
+      "type": "illustrative_map",
+      "name": "Illustrative map",
+      "settings": [
+        {
+          "type": "text",
+          "id": "caption",
+          "default": "Anand, Gujarat — illustrative map",
+          "label": "Caption"
         }
       ]
     },

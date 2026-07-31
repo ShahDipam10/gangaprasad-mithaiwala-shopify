@@ -172,7 +172,7 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <div class="header__heading-logo-wrapper">{% render 'brand-logo', width: settings.logo_width %}</div>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -185,7 +185,7 @@
         if section.settings.menu_type_desktop == 'dropdown'
           render 'header-dropdown-menu'
         elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
+          render 'header-mega-menu-custom'
         endif
       endif
     %}
@@ -215,7 +215,7 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <div class="header__heading-logo-wrapper">{% render 'brand-logo', width: settings.logo_width %}</div>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
