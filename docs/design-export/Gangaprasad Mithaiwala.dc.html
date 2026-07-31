@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#FBF4E8;}
+a{color:#6B1229;text-decoration:none;}
+a:hover{color:#E8912F;}
+*{box-sizing:border-box;}
+@keyframes gm-ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+</style>
+</helmet>
+<div style="font-family:'Poppins',sans-serif;background:#FBF4E8;color:#2A1B14;min-height:100vh;overflow-x:hidden;">
+
+<header onMouseLeave="{{ closeMegaMenu }}" style="position:sticky;top:0;z-index:50;background:#FBF4E8;border-bottom:1px solid #e6d7bf;">
+  <div style="max-width:1200px;margin:0 auto;padding:12px 20px;position:relative;display:flex;align-items:center;justify-content:center;min-height:48px;">
+    <div style="position:absolute;left:20px;top:50%;transform:translateY(-50%);display:flex;align-items:center;">
+      <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+        <nav style="display:flex;gap:22px;align-items:center;">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+            <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
+              <div onClick="{{ item.go }}" onMouseEnter="{{ item.hoverIn }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:#6B1229;border-bottom:2px solid #E8912F;padding-bottom:4px;white-space:nowrap;">{{ item.label }}</div>
+            </sc-if>
+            <sc-if value="{{ item.inactive }}" hint-placeholder-val="{{ true }}">
+              <div onClick="{{ item.go }}" onMouseEnter="{{ item.hoverIn }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;color:#2A1B14;padding-bottom:4px;white-space:nowrap;">{{ item.label }}</div>
+            </sc-if>
+          </sc-for>
+        </nav>
+      </sc-if>
+      <sc-if value="{{ mobileNotDesktop }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ toggleMobileNav }}" style="cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:8px;margin-left:-8px;">
+          <div style="width:20px;height:2px;background:#6B1229;"></div>
+          <div style="width:20px;height:2px;background:#6B1229;"></div>
+          <div style="width:20px;height:2px;background:#6B1229;"></div>
+        </div>
+      </sc-if>
+    </div>
+
+    <div onClick="{{ goHome }}" style="cursor:pointer;display:flex;flex-direction:column;align-items:center;">
+      <svg width="46" height="46" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="22.5" fill="#6B1229" stroke="#C9971F" stroke-width="1"></circle>
+        <circle cx="24" cy="24" r="18.5" fill="none" stroke="#C9971F" stroke-width="0.6"></circle>
+        <text x="24" y="29" text-anchor="middle" font-family="Fraunces, serif" font-size="16" font-weight="600" font-style="italic" fill="#F3E7D2">GM</text>
+        <line x1="15" y1="32.5" x2="33" y2="32.5" stroke="#C9971F" stroke-width="0.6"></line>
+      </svg>
+      <div style="font-family:'Poppins',sans-serif;font-size:8.5px;letter-spacing:0.12em;color:#B8860B;text-transform:uppercase;margin-top:3px;white-space:nowrap;">Est. 1919</div>
+    </div>
+
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;right:20px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:14px;">
+        <div style="display:flex;align-items:center;gap:8px;background:#F3E7D2;border-radius:999px;padding:8px 14px;width:180px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b5a4e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+          <input placeholder="{{ searchPlaceholder }}" style="border:none;background:transparent;outline:none;font-family:'Poppins',sans-serif;font-size:12.5px;color:#2A1B14;width:100%;"/>
+        </div>
+        <div style="cursor:pointer;position:relative;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2A1B14" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"></path><path d="M6 6L4.5 2H2"></path><circle cx="9.5" cy="20" r="1.4" fill="#2A1B14" stroke="none"></circle><circle cx="17" cy="20" r="1.4" fill="#2A1B14" stroke="none"></circle></svg>
+          <div style="position:absolute;top:-6px;right:-8px;background:#E8912F;color:#4A0C1C;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</div>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ mobileNotDesktop }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;right:20px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:16px;">
+        <div onClick="{{ toggleMobileSearch }}" style="cursor:pointer;">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#2A1B14" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+        </div>
+        <div style="cursor:pointer;position:relative;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2A1B14" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"></path><path d="M6 6L4.5 2H2"></path><circle cx="9.5" cy="20" r="1.4" fill="#2A1B14" stroke="none"></circle><circle cx="17" cy="20" r="1.4" fill="#2A1B14" stroke="none"></circle></svg>
+          <div style="position:absolute;top:-6px;right:-8px;background:#E8912F;color:#4A0C1C;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  <sc-if value="{{ mobileSearchOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:0 20px 14px;">
+      <div style="display:flex;align-items:center;gap:8px;background:#F3E7D2;border-radius:999px;padding:10px 16px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6b5a4e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.35-4.35"></path></svg>
+        <input placeholder="{{ searchPlaceholder }}" style="border:none;background:transparent;outline:none;font-family:'Poppins',sans-serif;font-size:13px;color:#2A1B14;width:100%;"/>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ megaMenuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="border-top:1px solid #e6d7bf;background:#FBF4E8;">
+      <div style="max-width:1200px;margin:0 auto;padding:24px 20px;display:flex;gap:32px;">
+        <div style="width:220px;flex-shrink:0;position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/10;">
+          <div role="img" aria-label="{{ megaMenuLabel }}" style="width:100%;height:100%;background-image:url('{{ megaMenuImg }}');background-size:cover;background-position:center;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(42,27,20,0.85) 100%);"></div>
+          <div style="position:absolute;bottom:10px;left:12px;font-family:'Fraunces',serif;font-size:15px;font-weight:600;color:#FBF4E8;">{{ megaMenuLabel }}</div>
+        </div>
+        <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+          <sc-for list="{{ megaMenuProducts }}" as="p" hint-placeholder-count="3">
+            <div onClick="{{ p.go }}" style="cursor:pointer;display:flex;gap:10px;align-items:center;">
+              <div style="width:48px;height:48px;border-radius:50%;flex-shrink:0;background-image:url('{{ p.img }}');background-size:cover;background-position:center;"></div>
+              <div>
+                <div style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:#2A1B14;">{{ p.name }}</div>
+                <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#6b5a4e;">&#8377;{{ p.price }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div onClick="{{ megaMenuGoAll }}" style="cursor:pointer;flex-shrink:0;align-self:flex-end;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#6B1229;text-decoration:underline;white-space:nowrap;">View all &rarr;</div>
+      </div>
+    </div>
+  </sc-if>
+</header>
+
+<sc-if value="{{ mobileNavOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;background:#4A0C1C;z-index:100;padding:28px 24px;display:flex;flex-direction:column;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <svg width="38" height="38" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="22.5" fill="#FBF4E8" stroke="#E8912F" stroke-width="1"></circle>
+        <circle cx="24" cy="24" r="18.5" fill="none" stroke="#E8912F" stroke-width="0.6"></circle>
+        <text x="24" y="29" text-anchor="middle" font-family="Fraunces, serif" font-size="16" font-weight="600" font-style="italic" fill="#6B1229">GM</text>
+        <line x1="15" y1="32.5" x2="33" y2="32.5" stroke="#E8912F" stroke-width="0.6"></line>
+      </svg>
+      <div onClick="{{ toggleMobileNav }}" style="font-size:30px;color:#F3E7D2;cursor:pointer;line-height:1;">&times;</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+        <div onClick="{{ item.go }}" style="font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:#FBF4E8;cursor:pointer;padding:14px 0;border-bottom:1px solid rgba(243,231,210,0.15);">{{ item.label }}</div>
+      </sc-for>
+    </div>
+    <div onClick="{{ navSweets }}" style="cursor:pointer;margin-top:32px;text-align:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;background:#E8912F;color:#4A0C1C;padding:15px;border-radius:2px;">Shop Bestsellers</div>
+    <div style="margin-top:auto;padding-top:28px;font-family:'Poppins',sans-serif;font-size:12px;color:#c9a88f;text-align:center;">+91 98765 43210 &middot; Anand, Gujarat</div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main>
+  <section style="position:relative;min-height:520px;display:flex;align-items:flex-end;overflow:hidden;">
+    <sc-for list="{{ heroSlides }}" as="slide" hint-placeholder-count="4">
+      <div role="img" aria-label="Mithai and namkeen showcase" style="position:absolute;inset:0;background-image:url('{{ slide.img }}');background-size:cover;background-position:center;opacity:{{ slide.opacity }};transition:opacity 1.4s ease;"></div>
+    </sc-for>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(74,12,28,0.2) 0%,rgba(74,12,28,0.88) 100%);"></div>
+    <div onClick="{{ prevHero }}" style="cursor:pointer;position:absolute;left:14px;top:45%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(42,27,20,0.4);display:flex;align-items:center;justify-content:center;z-index:2;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBF4E8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"></path></svg>
+    </div>
+    <div onClick="{{ nextHero }}" style="cursor:pointer;position:absolute;right:14px;top:45%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(42,27,20,0.4);display:flex;align-items:center;justify-content:center;z-index:2;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FBF4E8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+    </div>
+    <div style="position:relative;padding:40px 20px 30px;max-width:640px;z-index:1;">
+      <div style="font-family:'Poppins',sans-serif;font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:#E8912F;font-weight:600;margin-bottom:10px;">Since 1919 &middot; Anand, Gujarat</div>
+      <h1 style="font-family:'Fraunces',serif;font-size:38px;line-height:1.1;color:#FBF4E8;margin:0 0 14px;font-weight:600;text-wrap:pretty;">Three generations of Anand's sweetest mornings</h1>
+      <p style="font-family:'Poppins',sans-serif;font-size:15px;line-height:1.6;color:#F3E7D2;margin:0 0 22px;">Fresh cow's milk, small daily batches, no preservatives &mdash; mithai made the way Gangaprasad started it, a century ago.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div onClick="{{ navSweets }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;background:#E8912F;color:#4A0C1C;padding:13px 24px;border-radius:2px;">Shop Sweets</div>
+        <div onClick="{{ navFestival }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;background:transparent;border:1px solid #F3E7D2;color:#F3E7D2;padding:13px 24px;border-radius:2px;">Festival Specials</div>
+      </div>
+    </div>
+    <div style="position:relative;z-index:1;display:flex;justify-content:center;gap:7px;padding-bottom:18px;">
+      <sc-for list="{{ heroDots }}" as="dot" hint-placeholder-count="4">
+        <sc-if value="{{ dot.active }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ dot.go }}" style="cursor:pointer;width:22px;height:6px;border-radius:3px;background:#E8912F;"></div>
+        </sc-if>
+        <sc-if value="{{ dot.inactive }}" hint-placeholder-val="{{ true }}">
+          <div onClick="{{ dot.go }}" style="cursor:pointer;width:6px;height:6px;border-radius:3px;background:rgba(243,231,210,0.5);"></div>
+        </sc-if>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:40px 0;max-width:1200px;margin:0 auto;">
+    <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#4A0C1C;margin:0 0 18px;font-weight:600;padding:0 20px;">Shop by Category</h2>
+    <div style="display:flex;gap:16px;overflow-x:auto;padding:0 20px 8px;scroll-snap-type:x mandatory;justify-content:safe center;">
+      <sc-for list="{{ categoryCards }}" as="cat" hint-placeholder-count="3">
+        <div onClick="{{ cat.go }}" style="cursor:pointer;position:relative;border-radius:8px;overflow:hidden;flex:0 0 260px;height:300px;scroll-snap-align:start;box-shadow:0 4px 14px rgba(74,12,28,0.15);">
+          <div role="img" aria-label="{{ cat.label }}" style="width:100%;height:100%;background-image:url('{{ cat.img }}');background-size:cover;background-position:center;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,rgba(42,27,20,0.9) 100%);"></div>
+          <div style="position:absolute;bottom:18px;left:18px;right:18px;">
+            <div style="font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:#FBF4E8;">{{ cat.label }}</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:12.5px;color:#F3E7D2;margin-top:3px;">{{ cat.desc }}</div>
+            <div style="margin-top:10px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#E8912F;">Shop now &rarr;</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:12px 20px 40px;max-width:1200px;margin:0 auto;">
+    <h2 style="font-family:'Fraunces',serif;font-size:24px;color:#4A0C1C;margin:0 0 16px;font-weight:600;">Bestsellers</h2>
+    <div style="display:grid;grid-template-columns:repeat({{ productGridCols }},1fr);gap:16px;">
+      <sc-for list="{{ bestsellerCards }}" as="p" hint-placeholder-count="4">
+        <div onClick="{{ p.go }}" style="cursor:pointer;background:#FFFFFF;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px rgba(74,12,28,0.1);border:1px solid #f0e2c4;">
+          <div style="position:relative;aspect-ratio:1/1;background:radial-gradient(circle at 50% 40%,#fff8ec 0%,#F3E7D2 75%);">
+            <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}">
+              <div role="img" aria-label="{{ p.name }}" style="position:absolute;inset:10%;border-radius:50%;background-image:url('{{ p.img }}');background-size:cover;background-position:center;box-shadow:0 8px 18px rgba(74,12,28,0.18);"></div>
+            </sc-if>
+            <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ false }}">
+              <div style="width:100%;height:100%;background:repeating-linear-gradient(45deg,#F3E7D2,#F3E7D2 10px,#EAD9BC 10px,#EAD9BC 20px);display:flex;align-items:center;justify-content:center;">
+                <div style="font-family:monospace;font-size:10px;color:#8a6a3f;text-align:center;padding:8px;">PRODUCT PHOTO<br/>NEEDED</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ p.bestseller }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:10px;left:10px;background:#B8860B;color:#FBF4E8;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;border-radius:2px;">Bestseller</div>
+            </sc-if>
+          </div>
+          <div style="padding:14px 15px 17px;">
+            <div style="font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;color:#2A1B14;">{{ p.name }}</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-top:5px;">
+              <sc-for list="{{ p.stars }}" as="star" hint-placeholder-count="5">
+                <sc-if value="{{ star.filled }}" hint-placeholder-val="{{ true }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="#E8912F"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+                <sc-if value="{{ star.empty }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="#e0d4b8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+              </sc-for>
+              <span style="font-family:'Poppins',sans-serif;font-size:10.5px;color:#8a7a6a;">({{ p.reviewCount }})</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:7px;">
+              <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;">&#8377;{{ p.price }} / {{ p.unit }}</div>
+              <div style="width:30px;height:30px;border-radius:50%;background:#6B1229;color:#FBF4E8;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;line-height:1;">+</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:12px 20px 40px;max-width:1200px;margin:0 auto;">
+    <h2 style="font-family:'Fraunces',serif;font-size:24px;color:#4A0C1C;margin:0 0 16px;font-weight:600;">Shop by Occasion</h2>
+    <div style="display:grid;grid-template-columns:repeat({{ occasionGridCols }},1fr);gap:16px;">
+      <sc-for list="{{ occasions }}" as="occ" hint-placeholder-count="4">
+        <div onClick="{{ occ.go }}" style="cursor:pointer;position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/5;">
+          <div role="img" aria-label="{{ occ.label }}" style="width:100%;height:100%;background-image:url('{{ occ.img }}');background-size:cover;background-position:center;"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(42,27,20,0.88) 100%);"></div>
+          <div style="position:absolute;bottom:14px;left:14px;right:14px;">
+            <div style="font-family:'Fraunces',serif;font-size:16px;font-weight:600;color:#FBF4E8;">{{ occ.label }}</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:11.5px;color:#F3E7D2;margin-top:2px;">{{ occ.desc }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="padding:40px 20px;background:#F3E7D2;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;flex-direction:{{ heritageFlexDir }};gap:28px;align-items:center;">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Street_sweets_mithai_shop_in_Goa,_India.jpg?width=900" alt="Mithai shop counter with sweets on display" style="width:100%;max-width:{{ heritageImgMaxWidth }};object-fit:cover;border-radius:4px;"/>
+      <div>
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:#B8860B;font-weight:600;margin-bottom:10px;">Our Story</div>
+        <h2 style="font-family:'Fraunces',serif;font-size:26px;color:#4A0C1C;margin:0 0 14px;font-weight:600;">Founded in 1919, in India's dairy capital</h2>
+        <p style="font-family:'Poppins',sans-serif;font-size:14px;line-height:1.7;color:#2A1B14;margin:0 0 18px;">Gangaprasad opened his first mithai counter in Anand's dairy market using milk collected that same morning. Three generations later, the recipe book &mdash; and the daily-batch discipline &mdash; hasn't changed.</p>
+        <div onClick="{{ goAbout }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:#6B1229;text-decoration:underline;">Read our full story &rarr;</div>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isCollection }}" hint-placeholder-val="{{ false }}">
+<main style="max-width:1200px;margin:0 auto;padding:20px;">
+  <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#6b5a4e;margin-bottom:14px;">
+    <span onClick="{{ goHome }}" style="cursor:pointer;color:#6B1229;">Home</span> / {{ collectionCatLabel }}
+  </div>
+  <h1 style="font-family:'Fraunces',serif;font-size:30px;color:#4A0C1C;margin:0 0 8px;font-weight:600;">{{ collectionCatLabel }}</h1>
+  <p style="font-family:'Poppins',sans-serif;font-size:14px;color:#6b5a4e;margin:0 0 24px;max-width:560px;">{{ collectionCatDesc }}</p>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #e6d7bf;">
+    <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#2A1B14;">{{ collectionCount }} products</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <sc-if value="{{ sortFeaturedActive }}" hint-placeholder-val="{{ true }}"><div onClick="{{ setSortFeatured }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:999px;background:#6B1229;color:#FBF4E8;">Featured</div></sc-if>
+      <sc-if value="{{ sortFeaturedInactive }}" hint-placeholder-val="{{ false }}"><div onClick="{{ setSortFeatured }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;padding:7px 14px;border-radius:999px;border:1px solid #d8c6a3;color:#2A1B14;">Featured</div></sc-if>
+      <sc-if value="{{ sortAscActive }}" hint-placeholder-val="{{ false }}"><div onClick="{{ setSortAsc }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:999px;background:#6B1229;color:#FBF4E8;">Price: Low to High</div></sc-if>
+      <sc-if value="{{ sortAscInactive }}" hint-placeholder-val="{{ true }}"><div onClick="{{ setSortAsc }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;padding:7px 14px;border-radius:999px;border:1px solid #d8c6a3;color:#2A1B14;">Price: Low to High</div></sc-if>
+      <sc-if value="{{ sortDescActive }}" hint-placeholder-val="{{ false }}"><div onClick="{{ setSortDesc }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;padding:7px 14px;border-radius:999px;background:#6B1229;color:#FBF4E8;">Price: High to Low</div></sc-if>
+      <sc-if value="{{ sortDescInactive }}" hint-placeholder-val="{{ true }}"><div onClick="{{ setSortDesc }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;padding:7px 14px;border-radius:999px;border:1px solid #d8c6a3;color:#2A1B14;">Price: High to Low</div></sc-if>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat({{ productGridCols }},1fr);gap:16px;">
+    <sc-for list="{{ collectionCards }}" as="p" hint-placeholder-count="4">
+      <div onClick="{{ p.go }}" style="cursor:pointer;background:#FFFFFF;border-radius:10px;overflow:hidden;box-shadow:0 6px 20px rgba(74,12,28,0.1);border:1px solid #f0e2c4;">
+        <div style="position:relative;aspect-ratio:1/1;background:radial-gradient(circle at 50% 40%,#fff8ec 0%,#F3E7D2 75%);">
+          <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}">
+            <div role="img" aria-label="{{ p.name }}" style="position:absolute;inset:10%;border-radius:50%;background-image:url('{{ p.img }}');background-size:cover;background-position:center;box-shadow:0 8px 18px rgba(74,12,28,0.18);"></div>
+          </sc-if>
+          <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ false }}">
+            <div style="width:100%;height:100%;background:repeating-linear-gradient(45deg,#F3E7D2,#F3E7D2 10px,#EAD9BC 10px,#EAD9BC 20px);display:flex;align-items:center;justify-content:center;">
+              <div style="font-family:monospace;font-size:10px;color:#8a6a3f;text-align:center;padding:8px;">PRODUCT PHOTO<br/>NEEDED</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ p.bestseller }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute;top:10px;left:10px;background:#B8860B;color:#FBF4E8;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;border-radius:2px;">Bestseller</div>
+          </sc-if>
+        </div>
+        <div style="padding:14px 15px 17px;">
+          <div style="font-family:'Fraunces',serif;font-size:15.5px;font-weight:600;color:#2A1B14;">{{ p.name }}</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:5px;">
+            <sc-for list="{{ p.stars }}" as="star" hint-placeholder-count="5">
+              <sc-if value="{{ star.filled }}" hint-placeholder-val="{{ true }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="#E8912F"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+              <sc-if value="{{ star.empty }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="#e0d4b8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+            </sc-for>
+            <span style="font-family:'Poppins',sans-serif;font-size:10.5px;color:#8a7a6a;">({{ p.reviewCount }})</span>
+          </div>
+          <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;margin-top:7px;">&#8377;{{ p.price }} / {{ p.unit }}</div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isProduct }}" hint-placeholder-val="{{ false }}">
+<main style="max-width:1200px;margin:0 auto;padding:20px;">
+  <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#6b5a4e;margin-bottom:14px;">
+    <span onClick="{{ goHome }}" style="cursor:pointer;color:#6B1229;">Home</span> / {{ currentProduct.name }}
+  </div>
+  <div style="display:flex;flex-direction:{{ productFlexDir }};gap:36px;">
+    <div style="flex:1;">
+      <div style="aspect-ratio:1/1;border-radius:4px;overflow:hidden;background:#F3E7D2;margin-bottom:10px;position:relative;">
+        <sc-if value="{{ currentGalleryHasImg }}" hint-placeholder-val="{{ true }}">
+          <div role="img" aria-label="{{ currentProduct.name }}" style="width:100%;height:100%;background-image:url('{{ currentGalleryImg }}');background-size:cover;background-position:center;"></div>
+        </sc-if>
+        <sc-if value="{{ currentGalleryNoImg }}" hint-placeholder-val="{{ false }}">
+          <div style="width:100%;height:100%;background:repeating-linear-gradient(45deg,#F3E7D2,#F3E7D2 10px,#EAD9BC 10px,#EAD9BC 20px);display:flex;align-items:center;justify-content:center;">
+            <div style="font-family:monospace;font-size:11px;color:#8a6a3f;text-align:center;">PRODUCT PHOTO NEEDED</div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ currentProduct.placeholderImg }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;top:10px;left:10px;background:#1F6F5C;color:#FBF4E8;font-family:monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">Stand-in photo &mdash; shoot needed</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <sc-for list="{{ galleryList }}" as="g" hint-placeholder-count="3">
+          <div onClick="{{ g.go }}" style="width:64px;height:64px;border-radius:3px;overflow:hidden;cursor:pointer;background:#F3E7D2;">
+            <div role="img" aria-label="thumbnail" style="width:100%;height:100%;background-image:url('{{ g.src }}');background-size:cover;background-position:center;"></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="flex:1;">
+      <h1 style="font-family:'Fraunces',serif;font-size:28px;color:#4A0C1C;margin:0 0 8px;font-weight:600;">{{ currentProduct.name }}</h1>
+      <div style="display:flex;align-items:center;gap:5px;margin-bottom:12px;">
+        <sc-for list="{{ currentProductStars }}" as="star" hint-placeholder-count="5">
+          <sc-if value="{{ star.filled }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="#E8912F"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+          <sc-if value="{{ star.empty }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="#e0d4b8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+        </sc-for>
+        <span style="font-family:'Poppins',sans-serif;font-size:12.5px;color:#6b5a4e;">{{ currentProduct.rating }} ({{ currentProduct.reviewCount }} reviews)</span>
+      </div>
+      <p style="font-family:'Poppins',sans-serif;font-size:14px;line-height:1.7;color:#6b5a4e;margin:0 0 18px;">{{ currentProduct.desc }}</p>
+      <div style="font-family:'Fraunces',serif;font-size:24px;color:#6B1229;font-weight:600;margin-bottom:16px;">&#8377;{{ selectedVariant.price }}</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#2A1B14;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;">Weight</div>
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+        <sc-for list="{{ variantItems }}" as="v" hint-placeholder-count="3">
+          <sc-if value="{{ v.active }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ v.go }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:3px;background:#6B1229;color:#FBF4E8;">{{ v.w }}</div>
+          </sc-if>
+          <sc-if value="{{ v.inactive }}" hint-placeholder-val="{{ false }}">
+            <div onClick="{{ v.go }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;padding:9px 16px;border-radius:3px;border:1px solid #d8c6a3;color:#2A1B14;">{{ v.w }}</div>
+          </sc-if>
+        </sc-for>
+      </div>
+      <div onClick="{{ addToCart }}" style="cursor:pointer;text-align:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;background:#E8912F;color:#4A0C1C;padding:15px;border-radius:2px;margin-bottom:24px;">{{ addToCartLabel }}</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px;padding:16px 0;border-top:1px solid #e6d7bf;border-bottom:1px solid #e6d7bf;">
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#1F6F5C;font-weight:600;">&#10003; No preservatives</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#1F6F5C;font-weight:600;">&#10003; Fresh daily batch</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#1F6F5C;font-weight:600;">&#10003; COD available</div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#2A1B14;padding:12px 0;border-bottom:1px solid #e6d7bf;">Ingredients</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;padding:12px 0;line-height:1.6;">{{ currentProduct.ingredients }}</div>
+      </div>
+      <div>
+        <div style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#2A1B14;padding:12px 0;border-bottom:1px solid #e6d7bf;">Shelf Life</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;padding:12px 0;line-height:1.6;">{{ currentProduct.shelfLife }}</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:56px;padding-top:40px;border-top:1px solid #e6d7bf;">
+    <h2 style="font-family:'Fraunces',serif;font-size:22px;color:#4A0C1C;margin:0 0 6px;font-weight:600;">Customer Reviews</h2>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+      <sc-for list="{{ currentProductStars }}" as="star" hint-placeholder-count="5">
+        <sc-if value="{{ star.filled }}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="#E8912F"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+        <sc-if value="{{ star.empty }}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="#e0d4b8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+      </sc-for>
+      <span style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;">{{ currentProduct.rating }} out of 5 &middot; {{ currentProduct.reviewCount }} reviews</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat({{ relatedGridCols }},1fr);gap:16px;margin-bottom:48px;">
+      <sc-for list="{{ reviews }}" as="rev" hint-placeholder-count="3">
+        <div style="background:#F3E7D2;border-radius:8px;padding:16px;">
+          <div style="display:flex;gap:2px;margin-bottom:8px;">
+            <sc-for list="{{ rev.stars }}" as="star" hint-placeholder-count="5">
+              <sc-if value="{{ star.filled }}" hint-placeholder-val="{{ true }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="#E8912F"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+              <sc-if value="{{ star.empty }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="#d8c6a3"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+            </sc-for>
+          </div>
+          <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#2A1B14;line-height:1.6;margin-bottom:10px;">&ldquo;{{ rev.text }}&rdquo;</div>
+          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#6B1229;">{{ rev.name }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div>
+    <h2 style="font-family:'Fraunces',serif;font-size:22px;color:#4A0C1C;margin:0 0 18px;font-weight:600;">You may also like</h2>
+    <div style="display:grid;grid-template-columns:repeat({{ relatedGridCols }},1fr);gap:16px;">
+      <sc-for list="{{ relatedProducts }}" as="p" hint-placeholder-count="3">
+        <div onClick="{{ p.go }}" style="cursor:pointer;background:#FFFFFF;border-radius:6px;overflow:hidden;box-shadow:0 1px 3px rgba(42,27,20,0.1);">
+          <div style="position:relative;aspect-ratio:1/1;background:#F7EFDF;">
+            <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}">
+              <div role="img" aria-label="{{ p.name }}" style="width:100%;height:100%;background-image:url('{{ p.img }}');background-size:cover;background-position:center;"></div>
+            </sc-if>
+            <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ false }}">
+              <div style="width:100%;height:100%;background:repeating-linear-gradient(45deg,#F3E7D2,#F3E7D2 10px,#EAD9BC 10px,#EAD9BC 20px);display:flex;align-items:center;justify-content:center;">
+                <div style="font-family:monospace;font-size:10px;color:#8a6a3f;text-align:center;padding:8px;">PRODUCT PHOTO<br/>NEEDED</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ p.bestseller }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:8px;left:8px;background:#B8860B;color:#FBF4E8;font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 8px;border-radius:2px;">Bestseller</div>
+            </sc-if>
+            <sc-if value="{{ p.placeholder }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;top:8px;right:8px;background:#1F6F5C;color:#FBF4E8;font-family:monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 7px;border-radius:2px;">Stand-in photo</div>
+            </sc-if>
+          </div>
+          <div style="padding:12px 13px 15px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#2A1B14;">{{ p.name }}</div>
+            <div style="display:flex;align-items:center;gap:4px;margin-top:4px;">
+              <sc-for list="{{ p.stars }}" as="star" hint-placeholder-count="5">
+                <sc-if value="{{ star.filled }}" hint-placeholder-val="{{ true }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="#E8912F"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+                <sc-if value="{{ star.empty }}" hint-placeholder-val="{{ false }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="#e0d4b8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"></path></svg></sc-if>
+              </sc-for>
+              <span style="font-family:'Poppins',sans-serif;font-size:10.5px;color:#8a7a6a;">({{ p.reviewCount }})</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+              <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;">&#8377;{{ p.price }} / {{ p.unit }}</div>
+              <div style="width:28px;height:28px;border-radius:50%;background:#FBF4E8;border:1px solid #E8912F;color:#6B1229;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;line-height:1;">+</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</main>
+<sc-if value="{{ stickyCartVisible }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;bottom:0;left:0;right:0;background:#FBF4E8;border-top:1px solid #e6d7bf;box-shadow:0 -4px 16px rgba(74,12,28,0.12);padding:10px 16px;display:flex;align-items:center;gap:12px;z-index:60;">
+    <div style="width:42px;height:42px;border-radius:50%;background-image:url('{{ currentGalleryImg }}');background-size:cover;background-position:center;flex-shrink:0;"></div>
+    <div style="flex:1;min-width:0;">
+      <div style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:#2A1B14;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ currentProduct.name }}</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#6b5a4e;">&#8377;{{ selectedVariant.price }} &middot; {{ selectedVariant.w }}</div>
+    </div>
+    <div onClick="{{ addToCart }}" style="cursor:pointer;flex-shrink:0;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;background:#E8912F;color:#4A0C1C;padding:11px 20px;border-radius:2px;white-space:nowrap;">{{ addToCartLabel }}</div>
+  </div>
+</sc-if>
+</sc-if>
+
+<sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}">
+<main>
+  <section style="position:relative;height:320px;">
+    <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Street_sweets_mithai_shop_in_Goa,_India.jpg?width=1400" alt="Anand mithai heritage" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"/>
+    <div style="position:absolute;inset:0;background:rgba(74,12,28,0.55);display:flex;align-items:flex-end;">
+      <h1 style="font-family:'Fraunces',serif;font-size:30px;color:#FBF4E8;margin:0;padding:28px 20px;font-weight:600;max-width:640px;text-wrap:pretty;">Since 1919, one family, one recipe book.</h1>
+    </div>
+  </section>
+  <div style="max-width:760px;margin:0 auto;padding:36px 20px;">
+    <p style="font-family:'Poppins',sans-serif;font-size:15px;line-height:1.8;color:#2A1B14;margin:0 0 18px;">Anand is known across India as the country's dairy capital &mdash; home to the cooperative movement that built Amul. It's also where, in 1919, Gangaprasad opened a single mithai counter, using milk collected from the same cooperative dairies that morning.</p>
+    <p style="font-family:'Poppins',sans-serif;font-size:15px;line-height:1.8;color:#2A1B14;margin:0 0 18px;">More than a century later, the shop is still run by his descendants, three generations on. The recipes haven't changed, and neither has the habit: small batches, made fresh every day, with no preservatives &mdash; because nothing here is meant to sit on a shelf for long.</p>
+    <div style="position:relative;border-radius:4px;overflow:hidden;aspect-ratio:16/9;margin:28px 0;">
+      <div style="width:100%;height:100%;background:repeating-linear-gradient(45deg,#F3E7D2,#F3E7D2 10px,#EAD9BC 10px,#EAD9BC 20px);display:flex;align-items:center;justify-content:center;">
+        <div style="font-family:monospace;font-size:11px;color:#8a6a3f;text-align:center;padding:12px;">FOUNDER &amp; FAMILY PORTRAIT &mdash; PHOTO SHOOT NEEDED</div>
+      </div>
+      <div style="position:absolute;top:10px;left:10px;background:#1F6F5C;color:#FBF4E8;font-family:monospace;font-size:10px;text-transform:uppercase;padding:4px 8px;border-radius:2px;">Stand-in</div>
+    </div>
+    <h2 style="font-family:'Fraunces',serif;font-size:22px;color:#4A0C1C;margin:36px 0 4px;font-weight:600;">A Century, in Four Chapters</h2>
+    <div style="display:flex;flex-direction:column;gap:0;margin-top:16px;">
+      <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="4">
+        <div style="display:flex;gap:20px;padding:16px 0;border-left:2px solid #E8912F;padding-left:20px;margin-left:6px;">
+          <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#6B1229;min-width:64px;">{{ t.year }}</div>
+          <div>
+            <div style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#2A1B14;margin-bottom:4px;">{{ t.title }}</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#6b5a4e;line-height:1.6;">{{ t.text }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+<main style="max-width:1000px;margin:0 auto;padding:36px 20px;">
+  <h1 style="font-family:'Fraunces',serif;font-size:28px;color:#4A0C1C;margin:0 0 24px;font-weight:600;">Get in Touch</h1>
+  <div style="display:flex;flex-direction:{{ contactFlexDir }};gap:32px;">
+    <div style="flex:1;display:flex;flex-direction:column;gap:12px;">
+      <input placeholder="Your name" style="padding:13px 14px;border:1px solid #d8c6a3;border-radius:3px;font-family:'Poppins',sans-serif;font-size:14px;"/>
+      <input placeholder="Email address" style="padding:13px 14px;border:1px solid #d8c6a3;border-radius:3px;font-family:'Poppins',sans-serif;font-size:14px;"/>
+      <textarea placeholder="Your message" rows="5" style="padding:13px 14px;border:1px solid #d8c6a3;border-radius:3px;font-family:'Poppins',sans-serif;font-size:14px;resize:vertical;"></textarea>
+      <div style="cursor:pointer;text-align:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;background:#6B1229;color:#FBF4E8;padding:14px;border-radius:2px;">Send Message</div>
+    </div>
+    <div style="flex:1;">
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#B8860B;margin-bottom:6px;">Address</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:14px;color:#2A1B14;line-height:1.6;">Gangaprasad Mithaiwala<br/>Vidyanagar Road, Anand<br/>Gujarat 388001, India</div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:#B8860B;margin-bottom:6px;">Phone &amp; Hours</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:14px;color:#2A1B14;line-height:1.6;">+91 98765 43210<br/>Mon&ndash;Sun, 8:00 AM &ndash; 9:00 PM</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;border-radius:4px;overflow:hidden;">
+        <div style="width:100%;height:100%;background-image:linear-gradient(#d8c6a3 1px,transparent 1px),linear-gradient(90deg,#d8c6a3 1px,transparent 1px);background-size:24px 24px;background-color:#F3E7D2;display:flex;align-items:center;justify-content:center;">
+          <div style="font-family:monospace;font-size:11px;color:#8a6a3f;text-align:center;">MAP PLACEHOLDER<br/>Vidyanagar Road, Anand</div>
+        </div>
+        <div style="position:absolute;top:10px;left:10px;background:#1F6F5C;color:#FBF4E8;font-family:monospace;font-size:10px;text-transform:uppercase;padding:4px 8px;border-radius:2px;">Stand-in</div>
+      </div>
+    </div>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isFaq }}" hint-placeholder-val="{{ false }}">
+<main style="max-width:760px;margin:0 auto;padding:36px 20px;">
+  <h1 style="font-family:'Fraunces',serif;font-size:28px;color:#4A0C1C;margin:0 0 24px;font-weight:600;">Frequently Asked Questions</h1>
+  <sc-for list="{{ faqItems }}" as="f" hint-placeholder-count="5">
+    <div style="border-bottom:1px solid #e6d7bf;">
+      <div onClick="{{ f.toggle }}" style="cursor:pointer;padding:18px 0;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+        <div style="font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;color:#2A1B14;">{{ f.q }}</div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;color:#6B1229;">{{ f.toggleGlyph }}</div>
+      </div>
+      <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:'Poppins',sans-serif;font-size:14px;color:#6b5a4e;line-height:1.7;padding:0 0 18px;">{{ f.a }}</div>
+      </sc-if>
+    </div>
+  </sc-for>
+</main>
+</sc-if>
+
+<sc-if value="{{ isPolicy }}" hint-placeholder-val="{{ false }}">
+<main style="max-width:720px;margin:0 auto;padding:36px 20px;">
+  <h1 style="font-family:'Poppins',sans-serif;font-size:22px;color:#2A1B14;margin:0 0 20px;font-weight:600;">Policies</h1>
+  <div style="display:flex;gap:0;border-bottom:1px solid #ddd;margin-bottom:24px;flex-wrap:wrap;">
+    <sc-for list="{{ policyTabs }}" as="t" hint-placeholder-count="4">
+      <sc-if value="{{ t.active }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ t.go }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;padding:10px 16px;color:#2A1B14;border-bottom:2px solid #2A1B14;">{{ t.label }}</div>
+      </sc-if>
+      <sc-if value="{{ t.inactive }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ t.go }}" style="cursor:pointer;font-family:'Poppins',sans-serif;font-size:13px;font-weight:500;padding:10px 16px;color:#888;">{{ t.label }}</div>
+      </sc-if>
+    </sc-for>
+  </div>
+  <h2 style="font-family:'Poppins',sans-serif;font-size:16px;color:#2A1B14;margin:0 0 14px;font-weight:600;">{{ policyContent.title }}</h2>
+  <sc-for list="{{ policyContent.paras }}" as="para" hint-placeholder-count="4">
+    <p style="font-family:'Poppins',sans-serif;font-size:13px;line-height:1.75;color:#555;margin:0 0 14px;">{{ para }}</p>
+  </sc-for>
+</main>
+</sc-if>
+
+<footer style="background:#4A0C1C;padding:40px 20px 24px;margin-top:40px;">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat({{ footerCols }},1fr);gap:28px;margin-bottom:28px;">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <svg width="32" height="32" viewBox="0 0 48 48">
+          <circle cx="24" cy="24" r="22.5" fill="#FBF4E8" stroke="#E8912F" stroke-width="1"></circle>
+          <circle cx="24" cy="24" r="18.5" fill="none" stroke="#E8912F" stroke-width="0.6"></circle>
+          <text x="24" y="29" text-anchor="middle" font-family="Fraunces, serif" font-size="16" font-weight="600" font-style="italic" fill="#6B1229">GM</text>
+          <line x1="15" y1="32.5" x2="33" y2="32.5" stroke="#E8912F" stroke-width="0.6"></line>
+        </svg>
+        <div style="font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:#FBF4E8;">Gangaprasad Mithaiwala</div>
+      </div>
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:13px;color:#E8912F;margin-bottom:18px;">A sweet relation, since 1919.</div>
+      <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#F3E7D2;line-height:1.7;margin-bottom:14px;">
+        Gangaprasad Mithaiwala<br/>Vidyanagar Road, Anand<br/>Gujarat 388001, India
+      </div>
+      <div style="font-family:'Poppins',sans-serif;font-size:13px;color:#F3E7D2;line-height:1.7;">
+        +91 98765 43210<br/>Mon&ndash;Sun, 8:00 AM &ndash; 9:00 PM
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:#E8912F;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:14px;">Trusted Since 1919</div>
+      <div style="display:flex;flex-direction:column;gap:11px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8912F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"></path><path d="M9 12l2 2 4-4"></path></svg>
+          <div style="font-family:'Poppins',sans-serif;font-size:12.5px;color:#F3E7D2;">FSSAI Certified Kitchen</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8912F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"></circle><circle cx="17" cy="9" r="2.4"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><path d="M14.5 14.2c2.6.3 4.5 2.4 4.5 5.1"></path></svg>
+          <div style="font-family:'Poppins',sans-serif;font-size:12.5px;color:#F3E7D2;">3rd-Generation Family Run</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8912F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 3"></path></svg>
+          <div style="font-family:'Poppins',sans-serif;font-size:12.5px;color:#F3E7D2;">Fresh Daily Batches, No Preservatives</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8912F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7z"></path><circle cx="7" cy="18" r="1.6"></circle><circle cx="17" cy="18" r="1.6"></circle></svg>
+          <div style="font-family:'Poppins',sans-serif;font-size:12.5px;color:#F3E7D2;">Pan-India Shipping &middot; COD Available</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="position:relative;aspect-ratio:16/11;border-radius:6px;overflow:hidden;background:#e8dfc8;">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#eee6d2 0%,#e3d8ba 100%);"></div>
+        <svg width="100%" height="100%" viewBox="0 0 300 206" style="position:absolute;inset:0;">
+          <rect x="0" y="0" width="300" height="206" fill="#ece3cb"></rect>
+          <path d="M-10 40 L120 20 L180 55 L310 35" stroke="#c9bb92" stroke-width="10" fill="none"></path>
+          <path d="M-10 120 L100 100 L160 140 L310 115" stroke="#c9bb92" stroke-width="14" fill="none"></path>
+          <path d="M40 -10 L60 220" stroke="#c9bb92" stroke-width="8" fill="none"></path>
+          <path d="M230 -10 L210 220" stroke="#c9bb92" stroke-width="8" fill="none"></path>
+          <path d="M-10 40 L120 20 L180 55 L310 35" stroke="#fff" stroke-width="2" fill="none" opacity="0.5"></path>
+          <text x="130" y="30" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Vidyanagar Rd</text>
+          <text x="20" y="112" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Station Rd</text>
+          <text x="220" y="150" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Anand</text>
+        </svg>
+        <svg width="34" height="46" viewBox="0 0 30 42" style="position:absolute;left:50%;top:48%;transform:translate(-50%,-100%);filter:drop-shadow(0 3px 4px rgba(0,0,0,0.35));">
+          <path d="M15 0C7 0 0 6.7 0 15c0 10.5 15 27 15 27s15-16.5 15-27C30 6.7 23 0 15 0z" fill="#B8341F"></path>
+          <circle cx="15" cy="15" r="6" fill="#FBF4E8"></circle>
+        </svg>
+        <div style="position:absolute;bottom:8px;left:8px;background:rgba(74,12,28,0.85);color:#F3E7D2;font-family:'Poppins',sans-serif;font-size:10px;padding:4px 8px;border-radius:3px;">Anand, Gujarat &mdash; illustrative map</div>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1200px;margin:0 auto;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);font-family:'Poppins',sans-serif;font-size:11px;color:#c9a88f;">&copy; 2026 Gangaprasad Mithaiwala. All prices in &#8377; INR. Mockup for portfolio use &mdash; imagery flagged as stand-in is not final.</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const IMG_KAJU1 = "https://commons.wikimedia.org/wiki/Special:FilePath/Kaju_katli,_photographed_in_West_Bengal,_India,_February_10,_2024.jpg?width=1200";
+const IMG_KAJU2 = "https://commons.wikimedia.org/wiki/Special:FilePath/Kaju_katli_dessert_-_side_view.jpg?width=1200";
+const IMG_KAJU3 = "https://commons.wikimedia.org/wiki/Special:FilePath/Homemade_Kaju_Katli.jpg?width=1200";
+const IMG_LADDU = "https://commons.wikimedia.org/wiki/Special:FilePath/Motichur_ka_laddu.JPG?width=1200";
+const IMG_PEDA = "https://commons.wikimedia.org/wiki/Special:FilePath/Dharwad_peda.jpg?width=1200";
+const IMG_MOHANTHAL = "https://commons.wikimedia.org/wiki/Special:FilePath/Tri_-_colour_Kaju_Barfi.jpg?width=1200";
+const IMG_BARFI = "https://commons.wikimedia.org/wiki/Special:FilePath/(A)_plate_full_of_Indian_sweets_mithai_desserts.jpg?width=1200";
+const IMG_NAMKEEN = "https://commons.wikimedia.org/wiki/Special:FilePath/Indian_Snacks_(Namkeen).jpg?width=1200";
+const IMG_NAMKEEN2 = "https://commons.wikimedia.org/wiki/Special:FilePath/Homemade_sweets_mithai_and_snack_foods_India.jpg?width=1200";
+const IMG_SWEETSCUP = "https://commons.wikimedia.org/wiki/Special:FilePath/Indian_sweets_display.jpg?width=1200";
+const IMG_SHOPFRONT = "https://commons.wikimedia.org/wiki/Special:FilePath/Street_sweets_mithai_shop_in_Goa,_India.jpg?width=1400";
+const IMG_DIWALI = "https://commons.wikimedia.org/wiki/Special:FilePath/Sweets_Diwali_Mithai_India.jpg?width=1200";
+const IMG_JALEBI = "https://commons.wikimedia.org/wiki/Special:FilePath/Jalebi_-_Closeup_View_of_Jalebis.JPG?width=1400";
+const IMG_FARSAN = "https://commons.wikimedia.org/wiki/Special:FilePath/Diwali_Farsan_%28Faral%29_-_Gujarati_Style.jpg?width=1400";
+const IMG_KHAKHRA = "https://commons.wikimedia.org/wiki/Special:FilePath/Khakhra.png?width=1000";
+const IMG_MITHAI_DISPLAY = "https://commons.wikimedia.org/wiki/Special:FilePath/Sweets_Mithai_for_Diwali_and_other_Festivals_of_India.jpg?width=1400";
+const IMG_KAJU_HERO = "https://commons.wikimedia.org/wiki/Special:FilePath/Picture_of_tasty_Kaju_katli.JPG?width=1400";
+const HERO_SLIDES = [IMG_SHOPFRONT, IMG_JALEBI, IMG_MITHAI_DISPLAY, IMG_KAJU_HERO];
+
+const PRODUCTS = [
+  { id:'kaju-katli', name:'Kaju Katli', cat:'sweets', bestseller:true,
+    desc:"Diamond-cut cashew fudge, finished with a whisper of edible silver leaf \u2014 Anand's answer to a wedding sweet.",
+    images:[IMG_KAJU_HERO, IMG_KAJU1, IMG_KAJU2, IMG_KAJU3], placeholderImg:false,
+    rating:4.8, reviewCount:312,
+    ingredients:'Cashew nuts, sugar, ghee, edible silver leaf (varq).',
+    shelfLife:'Best within 4\u20135 days of the batch date. Refrigerate in humid weather.',
+    variants:[{w:'250g',price:650},{w:'500g',price:1250},{w:'1kg',price:2400}] },
+  { id:'kesar-doodh-peda', name:'Kesar Doodh Peda', cat:'sweets', bestseller:true,
+    desc:"Slow-reduced Anand cow's milk, hand-rolled with saffron threads \u2014 our founder's original 1919 recipe.",
+    images:[IMG_PEDA], placeholderImg:false,
+    rating:4.9, reviewCount:204,
+    ingredients:"Cow's milk (khoya), sugar, saffron, cardamom.",
+    shelfLife:'Best within 4\u20135 days of the batch date. Refrigerate in humid weather.',
+    variants:[{w:'250g',price:450},{w:'500g',price:850},{w:'1kg',price:1600}] },
+  { id:'motichoor-laddu', name:'Motichoor Laddu', cat:'sweets', bestseller:true,
+    desc:'Fine besan pearls, fried and soaked in cardamom syrup, pressed while still warm.',
+    images:[IMG_LADDU], placeholderImg:false,
+    rating:4.7, reviewCount:167,
+    ingredients:'Gram flour (besan), sugar, ghee, cardamom, edible color.',
+    shelfLife:'Best within 4\u20135 days of the batch date. Refrigerate in humid weather.',
+    variants:[{w:'250g',price:380},{w:'500g',price:720},{w:'1kg',price:1380}] },
+  { id:'mohanthal', name:'Mohanthal', cat:'sweets', bestseller:false,
+    desc:'Roasted gram-flour fudge layered with pistachio and a touch of nutmeg.',
+    images:[IMG_MOHANTHAL], placeholderImg:false,
+    rating:4.6, reviewCount:58,
+    ingredients:'Gram flour, ghee, sugar, pistachio, nutmeg.',
+    shelfLife:'Best within 6\u20138 days of the batch date, stored airtight.',
+    variants:[{w:'250g',price:420},{w:'500g',price:800}] },
+  { id:'doodh-barfi', name:'Doodh Barfi', cat:'sweets', bestseller:false,
+    desc:'Milk reduced for six hours over a slow flame, set into rich, grainy squares.',
+    images:[IMG_BARFI], placeholderImg:true,
+    rating:4.5, reviewCount:41,
+    ingredients:"Cow's milk, sugar, cardamom.",
+    shelfLife:'Best within 4\u20135 days of the batch date. Refrigerate in humid weather.',
+    variants:[{w:'250g',price:400},{w:'500g',price:760}] },
+  { id:'ratlami-sev', name:'Ratlami Sev', cat:'namkeen', bestseller:false,
+    desc:'Coarse gram-flour sev tempered with black pepper and asafoetida.',
+    images:[IMG_NAMKEEN], placeholderImg:false,
+    rating:4.4, reviewCount:76,
+    ingredients:'Gram flour, edible oil, black pepper, asafoetida, salt.',
+    shelfLife:'Stays crisp for 30 days in an airtight container.',
+    variants:[{w:'250g',price:220},{w:'500g',price:420}] },
+  { id:'masala-khakhra', name:'Masala Khakhra', cat:'namkeen', bestseller:false,
+    desc:'Thin-rolled wheat crisps, roasted and dusted with our house spice blend.',
+    images:[IMG_NAMKEEN2], placeholderImg:true,
+    rating:4.3, reviewCount:39,
+    ingredients:'Whole wheat flour, edible oil, house spice blend, salt.',
+    shelfLife:'Stays crisp for 45 days in an airtight container.',
+    variants:[{w:'250g',price:180},{w:'500g',price:340}] },
+  { id:'chevdo', name:'Gujarati Chevdo', cat:'namkeen', bestseller:false,
+    desc:'A crunchy mix of poha, peanuts, curry leaf and gram lentils.',
+    images:[IMG_NAMKEEN2], placeholderImg:true,
+    rating:4.5, reviewCount:63,
+    ingredients:'Flattened rice, peanuts, gram lentils, curry leaf, edible oil, spices.',
+    shelfLife:'Stays crisp for 30 days in an airtight container.',
+    variants:[{w:'250g',price:200},{w:'500g',price:380}] },
+  { id:'diwali-hamper', name:'Diwali Mithai Gift Hamper', cat:'festival', bestseller:true,
+    desc:'A curated box of five signature sweets, packed for gifting and hand-delivered fresh.',
+    images:[IMG_MITHAI_DISPLAY, IMG_DIWALI], placeholderImg:false,
+    rating:4.9, reviewCount:145,
+    ingredients:'Assorted sweets \u2014 see individual product pages for full ingredient lists.',
+    shelfLife:'Best within 5 days \u2014 order close to your event date.',
+    variants:[{w:'1 box',price:1500}] },
+  { id:'rakhi-kaju-roll', name:'Kaju Roll Rakhi Box', cat:'festival', bestseller:false,
+    desc:'Rolled cashew fudge with a pistachio core, boxed for Raksha Bandhan gifting.',
+    images:[IMG_KAJU3], placeholderImg:true,
+    rating:4.7, reviewCount:29,
+    ingredients:'Cashew nuts, sugar, ghee, pistachio, edible silver leaf.',
+    shelfLife:'Best within 5\u20136 days of the batch date.',
+    variants:[{w:'200g',price:800}] },
+  { id:'navratan-mixture', name:'Navratan Mixture Gift Box', cat:'festival', bestseller:false,
+    desc:'Nine-namkeen assortment in a festive gold-foil box.',
+    images:[IMG_NAMKEEN], placeholderImg:true,
+    rating:4.6, reviewCount:34,
+    ingredients:'Assorted namkeen \u2014 gram flour, lentils, nuts, edible oil, spices.',
+    shelfLife:'Stays crisp for 30 days in an airtight container.',
+    variants:[{w:'500g',price:650}] }
+];
+
+class Component extends DCLogic {
+  state = {
+    page:'home', collectionCat:'sweets', currentProductId:'kaju-katli',
+    selectedWeight:{}, galleryIndex:0, mobileNavOpen:false,
+    sortBy:'featured', openFaqIndex:null, policyTab:'refund', added:false,
+    width: (typeof window !== 'undefined' ? window.innerWidth : 390),
+    heroIndex:0, searchPlaceholderIndex:0, mobileSearchOpen:false, stickyCartVisible:false, megaMenuKey:null
+  };
+
+  SEARCH_PLACEHOLDERS = ['Find your sweet today...', 'Craving something sweet?', 'Try our Kaju Katli...', 'Search Namkeen, Mithai...', 'What are you in the mood for?'];
+
+  componentDidMount(){
+    this._onResize = () => this.setState({ width: window.innerWidth });
+    window.addEventListener('resize', this._onResize);
+    this._heroTimer = setInterval(() => this.setState(s => ({ heroIndex: (s.heroIndex + 1) % 4 })), 4500);
+    this._searchTimer = setInterval(() => this.setState(s => ({ searchPlaceholderIndex: (s.searchPlaceholderIndex + 1) % this.SEARCH_PLACEHOLDERS.length })), 2600);
+    this._onScroll = () => {
+      const show = this.state.page === 'product' && window.scrollY > 460;
+      if (show !== this.state.stickyCartVisible) this.setState({ stickyCartVisible: show });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+  }
+  componentWillUnmount(){
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('scroll', this._onScroll);
+    clearInterval(this._heroTimer);
+    clearInterval(this._searchTimer);
+  }
+  toggleMobileSearch(){ this.setState(s => ({ mobileSearchOpen: !s.mobileSearchOpen, mobileNavOpen:false })); }
+  openMegaMenu(key){ this.setState({ megaMenuKey:key }); }
+  closeMegaMenu(){ this.setState({ megaMenuKey:null }); }
+  goToHero(i){ this.setState({ heroIndex: i }); }
+  nextHero(){ this.setState(s => ({ heroIndex: (s.heroIndex + 1) % 4 })); }
+  prevHero(){ this.setState(s => ({ heroIndex: (s.heroIndex + 3) % 4 })); }
+
+  navigate(key){
+    const map = {
+      home:{page:'home'},
+      sweets:{page:'collection',collectionCat:'sweets'},
+      namkeen:{page:'collection',collectionCat:'namkeen'},
+      festival:{page:'collection',collectionCat:'festival'},
+      about:{page:'about'},
+      contact:{page:'contact'}
+    };
+    this.setState(Object.assign({mobileNavOpen:false, stickyCartVisible:false}, map[key] || {page:key}));
+    if (typeof window !== 'undefined') window.scrollTo(0,0);
+  }
+  goFaq(){ this.setState({page:'faq', mobileNavOpen:false}); if (typeof window!=='undefined') window.scrollTo(0,0); }
+  goPolicy(tab){ this.setState(s=>({page:'policy', policyTab: tab || s.policyTab, mobileNavOpen:false})); if (typeof window!=='undefined') window.scrollTo(0,0); }
+  viewProduct(id){ this.setState({page:'product', currentProductId:id, galleryIndex:0, added:false, stickyCartVisible:false}); if (typeof window!=='undefined') window.scrollTo(0,0); }
+  toggleMobileNav(){ this.setState(s=>({mobileNavOpen:!s.mobileNavOpen})); }
+  selectWeight(id,w){ this.setState(s=>({selectedWeight:Object.assign({},s.selectedWeight,{[id]:w})})); }
+  setGalleryIndex(i){ this.setState({galleryIndex:i}); }
+  addToCart(){ this.setState({added:true}); }
+  toggleFaq(i){ this.setState(s=>({openFaqIndex: s.openFaqIndex===i ? null : i})); }
+  setSort(v){ this.setState({sortBy:v}); }
+  setPolicyTab(t){ this.setState({policyTab:t}); }
+
+  _stars(rating){
+    const r = Math.round(rating || 0);
+    return [0,1,2,3,4].map(i => ({ filled: i < r, empty: i >= r }));
+  }
+
+  _card(p){
+    const price = p.variants[0].price;
+    const img = p.images[0] || '';
+    return {
+      id:p.id, name:p.name, desc:p.desc, price, unit:p.variants[0].w,
+      img, hasImg: !!img, noImg: !img, placeholder: p.placeholderImg, bestseller: !!p.bestseller,
+      rating:p.rating, reviewCount:p.reviewCount, stars:this._stars(p.rating),
+      go: () => this.viewProduct(p.id)
+    };
+  }
+
+  _reviews(productId){
+    const pool = [
+      { name:'Priya S.', text:'Tastes exactly like what I remember from my grandmother\u2019s kitchen. Ordered for Diwali and it arrived fresh.' },
+      { name:'Rakesh M.', text:'Best kaju katli I\u2019ve had outside Anand. Not overly sweet, and the silver leaf is real.' },
+      { name:'Anjali D.', text:'Ordered a gift hamper for my in-laws \u2014 packaging was lovely and everyone loved it.' },
+      { name:'Vikram T.', text:'Consistent quality every time I order. You can tell it\u2019s made fresh, not mass-produced.' }
+    ];
+    return pool.slice(0,3).map((r,i) => Object.assign({}, r, { rating: 5 - (i===2?1:0), stars: this._stars(5 - (i===2?1:0)) }));
+  }
+
+  _faq(){
+    return [
+      { q:'How long do the sweets stay fresh?', a:'Milk-based sweets (peda, barfi, laddu) are best within 4\u20135 days of the batch date printed on the box; namkeen keeps for about 30 days in an airtight container. We make small batches daily rather than stocking for shelf life.' },
+      { q:'Do you ship pan-India, and is COD available?', a:'Yes, we ship across India in insulated, festival-ready packaging. Cash on delivery is available on orders under \u20b95,000.' },
+      { q:"What's your returns policy on food items?", a:"Because these are perishable, we can only accept returns for damaged or incorrect orders \u2014 reach out within 24 hours of delivery with a photo and we'll replace or refund it." },
+      { q:'Can I place a bulk order for a wedding or corporate gifting?', a:'Yes \u2014 write to us at least 7 days ahead for orders above 10kg or 50 boxes; we offer custom hamper assembly and branding for corporate gifting.' },
+      { q:'Are allergens listed on your products?', a:'All products are prepared in a kitchen that handles milk, cashew, pistachio and gram flour. Each product page lists its specific allergens; ask us directly for a full ingredient breakdown.' }
+    ];
+  }
+
+  _timeline(){
+    return [
+      { year:'1919', title:'Founded in Anand', text:"Gangaprasad opens a single mithai counter in Anand's dairy market, using milk from the day's first cooperative delivery." },
+      { year:'1958', title:'Second generation, first namkeen line', text:"Gangaprasad's son adds savory snacks, doubling the shop's footprint." },
+      { year:'1994', title:'Third generation, first gifting range', text:'Introduces gift hampers for weddings and festivals, still hand-assembled to order.' },
+      { year:'Today', title:'Same daily-batch principle', text:'Four generations of the same recipe book, still no preservatives, now shipping pan-India.' }
+    ];
+  }
+
+  _trust(){
+    const labels = ['No preservatives','Fresh daily batches','3rd-generation family run','FSSAI certified','COD available','Pan-India shipping'];
+    return labels.map(l => ({ label:l, initial:l.charAt(0) }));
+  }
+
+  _policy(){
+    return {
+      privacy:{ title:'Privacy Policy', paras:[
+        'We collect the information you give us when you place an order or contact us \u2014 name, address, phone number and email \u2014 to fulfil orders and respond to enquiries.',
+        'We do not sell or rent your personal information to third parties. Order details are shared only with our shipping partners as needed to deliver your package.',
+        'We use basic cookies to keep items in your cart and to understand which pages are useful. You can clear these at any time in your browser settings.',
+        'To request a copy of your data or ask us to delete it, write to us using the contact page and we will respond within 30 days.'
+      ]},
+      terms:{ title:'Terms of Service', paras:[
+        'By placing an order with Gangaprasad Mithaiwala, you agree to these terms. Product weights, prices and availability may change without notice.',
+        'All prices are listed in Indian Rupees (\u20b9) and are inclusive of applicable taxes unless stated otherwise at checkout.',
+        'We reserve the right to refuse or cancel an order in cases of suspected fraud, pricing errors, or inability to fulfil due to stock.',
+        'All recipes, photography, and brand marks on this site are the property of Gangaprasad Mithaiwala and may not be reproduced without permission.'
+      ]},
+      refund:{ title:'Refund Policy', paras:[
+        'Because our products are fresh and perishable, we are unable to accept returns once an order has been delivered and accepted.',
+        'If your order arrives damaged, spoiled, or incorrect, contact us within 24 hours of delivery with a photo, and we will arrange a replacement or a full refund.',
+        'Approved refunds are processed to your original payment method within 5\u20137 business days.',
+        'Orders cancelled before dispatch are refunded in full; once a batch has been prepared for your order, cancellation may not be possible.'
+      ]},
+      shipping:{ title:'Shipping Policy', paras:[
+        'We dispatch orders within 24\u201348 hours of confirmation, in insulated packaging designed to protect milk-based sweets in transit.',
+        'We currently ship across India. Metro cities typically receive orders in 2\u20133 days; other regions may take 4\u20136 days.',
+        'Cash on delivery is available on orders under \u20b95,000; prepaid orders can be paid by card, UPI, or net banking at checkout.',
+        'During Diwali, Rakhi and other festival peaks, please order at least a week ahead \u2014 delivery times may extend due to demand.'
+      ]}
+    };
+  }
+
+  renderVals(){
+    const s = this.state;
+    const isDesktop = s.width >= 960;
+
+    const navKeys = [
+      {key:'home',label:'Home'}, {key:'sweets',label:'Sweets'}, {key:'namkeen',label:'Namkeen'},
+      {key:'festival',label:'Festival Specials'}, {key:'about',label:'About'}, {key:'contact',label:'Contact'}
+    ];
+    const megaCategories = ['sweets','namkeen','festival'];
+    const navItems = navKeys.map(n => {
+      const active =
+        (n.key==='home' && s.page==='home') ||
+        (n.key==='sweets' && s.page==='collection' && s.collectionCat==='sweets') ||
+        (n.key==='namkeen' && s.page==='collection' && s.collectionCat==='namkeen') ||
+        (n.key==='festival' && s.page==='collection' && s.collectionCat==='festival') ||
+        (n.key==='about' && s.page==='about') ||
+        (n.key==='contact' && s.page==='contact');
+      const isCat = megaCategories.indexOf(n.key) !== -1;
+      return {
+        key:n.key, label:n.label, active, inactive:!active, go: () => this.navigate(n.key),
+        hoverIn: () => this.openMegaMenu(isCat ? n.key : null)
+      };
+    });
+    const megaCat = s.megaMenuKey && PRODUCTS.filter(p => p.cat===s.megaMenuKey).slice(0,3).map(p => this._card(p));
+    const megaCatLabels = {sweets:'Sweets', namkeen:'Namkeen', festival:'Festival Specials'};
+    const megaCatImgs = {sweets:IMG_SWEETSCUP, namkeen:IMG_FARSAN, festival:IMG_JALEBI};
+
+    const currentProduct = PRODUCTS.find(p => p.id===s.currentProductId) || PRODUCTS[0];
+    const selectedWeight = s.selectedWeight[currentProduct.id] || currentProduct.variants[0].w;
+    const selectedVariant = currentProduct.variants.find(v => v.w===selectedWeight) || currentProduct.variants[0];
+    const variantItems = currentProduct.variants.map(v => ({
+      w:v.w, price:v.price, active: v.w===selectedWeight, inactive: v.w!==selectedWeight,
+      go: () => this.selectWeight(currentProduct.id, v.w)
+    }));
+    const galleryList = currentProduct.images.map((src,i) => ({ src, i, go: () => this.setGalleryIndex(i) }));
+    const currentGalleryImg = currentProduct.images[s.galleryIndex] || currentProduct.images[0] || '';
+
+    const relatedProducts = PRODUCTS.filter(p => p.cat===currentProduct.cat && p.id!==currentProduct.id).slice(0,3).map(p => this._card(p));
+
+    let collectionList = PRODUCTS.filter(p => p.cat===s.collectionCat);
+    if (s.sortBy==='price-asc') collectionList = collectionList.slice().sort((a,b)=>a.variants[0].price-b.variants[0].price);
+    if (s.sortBy==='price-desc') collectionList = collectionList.slice().sort((a,b)=>b.variants[0].price-a.variants[0].price);
+    const collectionCards = collectionList.map(p => this._card(p));
+
+    const bestsellerCards = PRODUCTS.filter(p => p.bestseller).slice(0,4).map(p => this._card(p));
+
+    const catLabels = {sweets:'Sweets', namkeen:'Namkeen', festival:'Festival Specials'};
+    const catDescs = {
+      sweets:"Milk-based mithai, made fresh every morning with cow's milk from Anand's dairy cooperatives.",
+      namkeen:'Savory snacks for everyday tea and festival tables, roasted fresh in small batches.',
+      festival:'Gift-ready boxes for Diwali, Rakhi, weddings and celebrations \u2014 assembled to order.'
+    };
+
+    return {
+      isDesktop, mobileNotDesktop: !isDesktop,
+      productGridCols: isDesktop ? 4 : 2,
+      catGridCols: isDesktop ? 3 : 1,
+      relatedGridCols: isDesktop ? 3 : 2,
+      occasionGridCols: isDesktop ? 4 : 2,
+      footerCols: isDesktop ? 3 : 1,
+      productFlexDir: isDesktop ? 'row' : 'column',
+      contactFlexDir: isDesktop ? 'row' : 'column',
+      heritageFlexDir: isDesktop ? 'row' : 'column',
+      heritageImgMaxWidth: isDesktop ? '440px' : '100%',
+
+      navItems, mobileNavOpen: s.mobileNavOpen, toggleMobileNav: () => this.toggleMobileNav(),
+      megaMenuOpen: !!s.megaMenuKey, closeMegaMenu: () => this.closeMegaMenu(),
+      megaMenuLabel: s.megaMenuKey ? megaCatLabels[s.megaMenuKey] : '',
+      megaMenuImg: s.megaMenuKey ? megaCatImgs[s.megaMenuKey] : '',
+      megaMenuProducts: megaCat || [],
+      megaMenuGoAll: () => this.navigate(s.megaMenuKey || 'sweets'),
+      mobileSearchOpen: s.mobileSearchOpen, toggleMobileSearch: () => this.toggleMobileSearch(),
+      searchPlaceholder: this.SEARCH_PLACEHOLDERS[s.searchPlaceholderIndex],
+      heroSlides: HERO_SLIDES.map((img,i) => ({ img, opacity: i===s.heroIndex ? 1 : 0 })),
+      heroDots: HERO_SLIDES.map((_,i) => ({ active: i===s.heroIndex, inactive: i!==s.heroIndex, go: () => this.goToHero(i) })),
+      prevHero: () => this.prevHero(), nextHero: () => this.nextHero(),
+
+      isHome: s.page==='home', isCollection: s.page==='collection', isProduct: s.page==='product',
+      isAbout: s.page==='about', isContact: s.page==='contact', isFaq: s.page==='faq', isPolicy: s.page==='policy',
+
+      goHome: () => this.navigate('home'),
+      goAbout: () => this.navigate('about'),
+      goContactFooter: () => this.navigate('contact'),
+      navSweets: () => this.navigate('sweets'),
+      navNamkeen: () => this.navigate('namkeen'),
+      navFestival: () => this.navigate('festival'),
+      goFaq: () => this.goFaq(),
+      goPolicyDefault: () => this.goPolicy(),
+      goPolicyPrivacy: () => this.goPolicy('privacy'),
+      goPolicyTerms: () => this.goPolicy('terms'),
+      goPolicyRefund: () => this.goPolicy('refund'),
+      goPolicyShipping: () => this.goPolicy('shipping'),
+
+      categoryCards: [
+        { key:'sweets', label:'Sweets', desc:'Mithai for everyday and celebration.', img:IMG_SWEETSCUP, placeholder:false, go:() => this.navigate('sweets') },
+        { key:'namkeen', label:'Namkeen', desc:'Savory snacks, roasted fresh.', img:IMG_FARSAN, placeholder:false, go:() => this.navigate('namkeen') },
+        { key:'festival', label:'Festival Specials', desc:'Gift boxes for every occasion.', img:IMG_JALEBI, placeholder:false, go:() => this.navigate('festival') }
+      ],
+      bestsellerCards,
+      trustBadges: this._trust(),
+
+      collectionCatLabel: catLabels[s.collectionCat],
+      collectionCatDesc: catDescs[s.collectionCat],
+      collectionCount: collectionCards.length,
+      collectionCards,
+      sortFeaturedActive: s.sortBy==='featured', sortFeaturedInactive: s.sortBy!=='featured',
+      sortAscActive: s.sortBy==='price-asc', sortAscInactive: s.sortBy!=='price-asc',
+      sortDescActive: s.sortBy==='price-desc', sortDescInactive: s.sortBy!=='price-desc',
+      setSortFeatured: () => this.setSort('featured'),
+      setSortAsc: () => this.setSort('price-asc'),
+      setSortDesc: () => this.setSort('price-desc'),
+
+      currentProduct, selectedVariant, variantItems, galleryList, currentGalleryImg,
+      currentGalleryHasImg: !!currentGalleryImg, currentGalleryNoImg: !currentGalleryImg,
+      addToCartLabel: s.added ? 'Added to Cart \u2713' : ('Add to Cart \u2014 \u20b9' + selectedVariant.price),
+      addToCart: () => this.addToCart(),
+      relatedProducts,
+      currentProductStars: this._stars(currentProduct.rating),
+      reviews: this._reviews(currentProduct.id),
+      stickyCartVisible: s.stickyCartVisible,
+      occasions: [
+        { label:'Wedding Gifting', desc:'Curated boxes for the big day.', img:IMG_KAJU_HERO, go:() => this.navigate('festival') },
+        { label:'Corporate Gifting', desc:'Bulk orders, branded packaging.', img:IMG_MITHAI_DISPLAY, go:() => this.navigate('festival') },
+        { label:'Festival Hampers', desc:'Diwali, Rakhi and more.', img:IMG_DIWALI, go:() => this.navigate('festival') },
+        { label:'Everyday Treats', desc:'A little sweetness, any day.', img:IMG_JALEBI, go:() => this.navigate('sweets') }
+      ],
+
+      faqItems: this._faq().map((f,i) => ({ q:f.q, a:f.a, open: s.openFaqIndex===i, toggleGlyph: s.openFaqIndex===i ? '\u2212' : '+', toggle: () => this.toggleFaq(i) })),
+      timeline: this._timeline(),
+
+      policyTabs: ['privacy','terms','refund','shipping'].map(t => ({
+        key:t, label:{privacy:'Privacy',terms:'Terms',refund:'Refund',shipping:'Shipping'}[t],
+        active: s.policyTab===t, inactive: s.policyTab!==t, go: () => this.setPolicyTab(t)
+      })),
+      policyContent: this._policy()[s.policyTab]
+    };
+  }
+}
+</script>
+</body>
+</html>
