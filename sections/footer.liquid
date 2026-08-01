@@ -191,9 +191,6 @@
                     </div>
                   {%- when 'trust_badges' -%}
                     <div class="footer-block__trust-badges">
-                      {%- if block.settings.heading != blank -%}
-                        <h2 class="footer-block__heading inline-richtext">{{ block.settings.heading }}</h2>
-                      {%- endif -%}
                       <ul class="footer-trust-list list-unstyled">
                         {%- assign trust_lines = block.settings.items | newline_to_br | split: '<br />' -%}
                         {%- for line in trust_lines -%}
