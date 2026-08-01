@@ -393,7 +393,9 @@
           {%- if enable_sorting -%}
             {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
             {%- style -%}
-              .sort-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+              .facet-filters.sorting { min-width: 0; }
+              .facet-filters__field { min-width: 0; }
+              .sort-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; min-width: 0; max-width: 100%; }
               .sort-pills__pill {
                 cursor: pointer;
                 font-family: var(--font-body-family);
