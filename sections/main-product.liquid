@@ -37,6 +37,36 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
+
+    .product-trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.6rem;
+      padding: 1.2rem 0;
+      border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+      border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+      margin: 1rem 0;
+    }
+    .product-trust-badges__item {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: rgb(var(--color-button));
+    }
+    .product-info-row {
+      padding: 1.2rem 0;
+      border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    }
+    .product-info-row__label {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .product-info-row__value {
+      font-family: var(--font-body-family);
+      font-size: 1.3rem;
+      color: rgba(var(--color-foreground), 0.75);
+      line-height: 1.6;
+    }
   {%- endstyle -%}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
@@ -499,6 +529,29 @@
                     section_id: section.id,
                     show_pickup_availability: true
                   -%}
+                {%- when 'trust_badges_product' -%}
+                  <div class="product-trust-badges">
+                    <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> No preservatives</span>
+                    <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> Fresh daily batch</span>
+                    <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> COD available</span>
+                  </div>
+                {%- when 'ingredients_shelf_life' -%}
+                  {%- if product.metafields.custom.ingredients.value != blank or product.metafields.custom.shelf_life.value != blank -%}
+                    <div class="product-info-rows">
+                      {%- if product.metafields.custom.ingredients.value != blank -%}
+                        <div class="product-info-row">
+                          <div class="product-info-row__label">Ingredients</div>
+                          <div class="product-info-row__value">{{ product.metafields.custom.ingredients.value }}</div>
+                        </div>
+                      {%- endif -%}
+                      {%- if product.metafields.custom.shelf_life.value != blank -%}
+                        <div class="product-info-row">
+                          <div class="product-info-row__label">Shelf Life</div>
+                          <div class="product-info-row__value">{{ product.metafields.custom.shelf_life.value }}</div>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
                     <div class="rating-wrapper">
@@ -752,6 +805,119 @@
     </div>
   </product-component>
 </product-info>
+
+  <sticky-add-to-cart
+    class="color-{{ section.settings.color_scheme }} gradient"
+    data-form-id="{{ product_form_id }}"
+    data-price-id="price-{{ section.id }}"
+  >
+    <div class="sticky-add-to-cart__inner page-width">
+      <div class="sticky-add-to-cart__media">
+        {%- if product.featured_media -%}
+          {{ product.featured_media | image_url: width: 100 | image_tag: loading: 'lazy', alt: product.title | escape }}
+        {%- endif -%}
+      </div>
+      <div class="sticky-add-to-cart__info">
+        <div class="sticky-add-to-cart__title">{{ product.title | escape }}</div>
+        <div class="sticky-add-to-cart__price"></div>
+      </div>
+      <button type="button" class="button sticky-add-to-cart__button">{{ 'products.product.add_to_cart' | t }}</button>
+    </div>
+  </sticky-add-to-cart>
+
+  {%- style -%}
+    sticky-add-to-cart {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 5;
+      border-top: 0.1rem solid rgba(var(--color-foreground), 0.15);
+      transform: translateY(100%);
+      transition: transform 0.25s ease;
+    }
+    sticky-add-to-cart.is-visible {
+      transform: translateY(0);
+    }
+    .sticky-add-to-cart__inner {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 1rem 1.5rem;
+    }
+    .sticky-add-to-cart__media img {
+      width: 4.4rem;
+      height: 4.4rem;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .sticky-add-to-cart__info {
+      flex: 1;
+      min-width: 0;
+    }
+    .sticky-add-to-cart__title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sticky-add-to-cart__price {
+      font-family: var(--font-body-family);
+      font-size: 1.2rem;
+    }
+    .sticky-add-to-cart__button {
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    @media screen and (min-width: 750px) {
+      sticky-add-to-cart { display: none; }
+    }
+  {%- endstyle -%}
+
+  <script>
+    (function () {
+      class StickyAddToCart extends HTMLElement {
+        connectedCallback() {
+          this.priceEl = document.getElementById(this.dataset.priceId);
+          this.priceTarget = this.querySelector('.sticky-add-to-cart__price');
+          this.button = this.querySelector('.sticky-add-to-cart__button');
+          this.trigger = document.querySelector('#' + this.dataset.formId + ' [name="add"], #' + this.dataset.formId);
+          this.syncPrice();
+          if (this.priceEl) {
+            this.observer = new MutationObserver(() => this.syncPrice());
+            this.observer.observe(this.priceEl, { childList: true, subtree: true, characterData: true });
+          }
+          this.button.addEventListener('click', () => {
+            var realButton = document.querySelector('#' + this.dataset.formId + ' button[name="add"]');
+            if (realButton) realButton.click();
+          });
+          this.galleryEl = document.querySelector('.product__media-wrapper, .product__column-sticky, .product-media-container');
+          this._onScroll = () => this.updateVisibility();
+          window.addEventListener('scroll', this._onScroll, { passive: true });
+          this.updateVisibility();
+        }
+        syncPrice() {
+          if (this.priceEl && this.priceTarget) {
+            var price = this.priceEl.querySelector('.price-item--regular, .price-item--sale, .price__regular .price-item');
+            this.priceTarget.textContent = price ? price.textContent.trim() : this.priceEl.textContent.trim().replace(/\s+/g, ' ');
+          }
+        }
+        updateVisibility() {
+          var threshold = 480;
+          this.classList.toggle('is-visible', window.scrollY > threshold);
+        }
+        disconnectedCallback() {
+          window.removeEventListener('scroll', this._onScroll);
+          if (this.observer) this.observer.disconnect();
+        }
+      }
+      if (!customElements.get('sticky-add-to-cart')) {
+        customElements.define('sticky-add-to-cart', StickyAddToCart);
+      }
+    })();
+  </script>
 
 {% schema %}
 {
@@ -1238,6 +1404,18 @@
           "label": "t:sections.main-product.blocks.popup.settings.page.label"
         }
       ]
+    },
+    {
+      "type": "trust_badges_product",
+      "name": "Trust badges",
+      "limit": 1,
+      "settings": []
+    },
+    {
+      "type": "ingredients_shelf_life",
+      "name": "Ingredients & Shelf Life",
+      "limit": 1,
+      "settings": []
     },
     {
       "type": "rating",
