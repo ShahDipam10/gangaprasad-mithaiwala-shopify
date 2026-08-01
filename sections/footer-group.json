@@ -13,6 +13,13 @@
           "type": "link_list",
           "settings": { "heading": "Quick links", "menu": "footer" }
         },
+        "contact": {
+          "type": "text",
+          "settings": {
+            "heading": "Visit or call us",
+            "subtext": "<p>Station Road, near the dairy market<br>Anand, Gujarat 388001<br>+91 98765 43210<br>Open daily, 9 AM&ndash;8:30 PM IST</p>"
+          }
+        },
         "trust": {
           "type": "trust_badges",
           "settings": {
@@ -25,10 +32,11 @@
           "settings": { "caption": "Anand, Gujarat — illustrative map" }
         }
       },
-      "block_order": ["brand", "menu", "trust", "map"],
+      "block_order": ["brand", "menu", "contact", "trust", "map"],
       "settings": {
         "color_scheme": "scheme-3",
-        "newsletter_enable": false,
+        "newsletter_enable": true,
+        "newsletter_heading": "Get offers before everyone else",
         "enable_follow_on_shop": false,
         "show_social": true,
         "enable_country_selector": false,
