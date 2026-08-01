@@ -99,20 +99,6 @@
     }
   }
 
-  .header__search-inline {
-    margin-left: 16px;
-    margin-right: 4px;
-    flex-shrink: 1;
-    min-width: 0;
-    max-width: 15rem;
-  }
-
-  @media screen and (max-width: 749px) {
-    .header__search-inline {
-      max-width: 10rem;
-      margin-left: 8px;
-    }
-  }
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
@@ -157,6 +143,9 @@
         render 'header-drawer'
       endif
 
+      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+        render 'header-search', input_id: 'Search-In-Modal-1'
+      endif
     -%}
 
     {%- if section.settings.logo_position != 'middle-center' -%}
@@ -259,9 +248,8 @@
           </localization-form>
         {%- endif -%}
       </div>
-      <div class="header__search-inline">
-        {% render 'header-search-bar', input_id: 'Search-In-Header' %}
-      </div>
+      {% render 'header-search', input_id: 'Search-In-Modal' %}
+
       {%- if shop.customer_accounts_enabled -%}
         <a
           href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
