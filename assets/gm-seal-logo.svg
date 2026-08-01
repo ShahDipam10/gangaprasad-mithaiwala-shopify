@@ -1,7 +1,18 @@
-<svg width="200" height="230" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="100" cy="100" r="94" fill="#6B1229" stroke="#C9971F" stroke-width="4"/>
-  <circle cx="100" cy="100" r="77" fill="none" stroke="#C9971F" stroke-width="2.4"/>
-  <text x="100" y="118" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700" font-style="italic" fill="#F3E7D2">GM</text>
-  <line x1="62" y1="136" x2="138" y2="136" stroke="#C9971F" stroke-width="2.4"/>
-  <text x="100" y="205" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="700" letter-spacing="3" fill="#4A0C1C">EST. 1919</text>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <path id="gm-seal-top-arc" d="M 22,100 A 78,78 0 0 1 178,100" fill="none"/>
+    <path id="gm-seal-bottom-arc" d="M 178,100 A 78,78 0 0 1 22,100" fill="none"/>
+  </defs>
+  <circle cx="100" cy="100" r="96" fill="#6B1229" stroke="#C9971F" stroke-width="3"/>
+  <circle cx="100" cy="100" r="84" fill="none" stroke="#C9971F" stroke-width="1.5"/>
+  <circle cx="100" cy="100" r="60" fill="none" stroke="#C9971F" stroke-width="1" opacity="0.6"/>
+  <text font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-weight="600" letter-spacing="2.6" fill="#F3E7D2">
+    <textPath href="#gm-seal-top-arc" startOffset="50%" text-anchor="middle">GANGAPRASAD</textPath>
+  </text>
+  <text font-family="Georgia, 'Times New Roman', serif" font-size="12.5" font-weight="600" letter-spacing="2.6" fill="#F3E7D2">
+    <textPath href="#gm-seal-bottom-arc" startOffset="50%" text-anchor="middle">MITHAIWALA</textPath>
+  </text>
+  <text x="100" y="94" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="700" font-style="italic" fill="#F3E7D2">GM</text>
+  <line x1="76" y1="108" x2="124" y2="108" stroke="#C9971F" stroke-width="1.5"/>
+  <text x="100" y="124" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="13" font-weight="600" letter-spacing="1.5" fill="#C9971F">EST. 1919</text>
 </svg>
