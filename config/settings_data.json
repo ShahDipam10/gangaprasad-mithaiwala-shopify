@@ -3,6 +3,7 @@
   "presets": {
     "Dawn": {
       "logo_width": 56,
+      "favicon": "shopify://shop_images/gm-seal-logo_0160a297-80d3-4063-9e68-e05c8566bdd3.svg",
       "color_schemes": {
         "scheme-1": {
           "settings": {

@@ -99,15 +99,18 @@
     }
   }
 
-  .header__search-row {
-    padding-bottom: 12px;
+  .header__search-inline {
+    margin-left: 16px;
+    margin-right: 4px;
+    flex-shrink: 1;
+    min-width: 0;
+    max-width: 15rem;
   }
 
-  @media screen and (min-width: 750px) {
-    .header__search-row {
-      max-width: 44rem;
-      margin: 0 auto;
-      padding-bottom: 16px;
+  @media screen and (max-width: 749px) {
+    .header__search-inline {
+      max-width: 10rem;
+      margin-left: 8px;
     }
   }
 {%- endstyle -%}
@@ -256,6 +259,9 @@
           </localization-form>
         {%- endif -%}
       </div>
+      <div class="header__search-inline">
+        {% render 'header-search-bar', input_id: 'Search-In-Header' %}
+      </div>
       {%- if shop.customer_accounts_enabled -%}
         <a
           href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
@@ -310,9 +316,6 @@
       </a>
     </div>
   </header>
-  <div class="header__search-row page-width">
-    {% render 'header-search-bar', input_id: 'Search-In-Header' %}
-  </div>
 </{{ header_tag }}>
 
 {%- if settings.cart_type == 'notification' -%}
