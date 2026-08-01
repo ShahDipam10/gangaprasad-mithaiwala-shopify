@@ -1,7 +1,7 @@
 {%- style -%}
   #HeroShowcase-{{ section.id }} {
     position: relative;
-    min-height: 480px;
+    min-height: 380px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -118,7 +118,7 @@
     #HeroShowcase-{{ section.id }} .hero-arrow { display: none; }
   }
   @media screen and (min-width: 750px) {
-    #HeroShowcase-{{ section.id }} { min-height: 620px; }
+    #HeroShowcase-{{ section.id }} { min-height: 480px; }
     #HeroShowcase-{{ section.id }} .hero-heading { font-size: 4.2rem; }
     #HeroShowcase-{{ section.id }} .hero-content { padding: 0 20px 40px 48px; }
     #HeroShowcase-{{ section.id }} .hero-arrow { width: 48px; height: 48px; }
@@ -127,7 +127,7 @@
 
 <hero-showcase id="HeroShowcase-{{ section.id }}" class="color-{{ section.settings.color_scheme }}" data-interval="{{ section.settings.change_slides_speed | times: 1000 }}">
   {%- for block in section.blocks -%}
-    <div class="hero-slide{% if forloop.first %} is-active{% endif %}" style="background-image:url('{{ block.settings.image_url }}');" {{ block.shopify_attributes }}></div>
+    <div class="hero-slide{% if forloop.first %} is-active{% endif %}"{% if block.settings.image %} style="background-image:url('{{ block.settings.image | image_url: width: 1600 }}');"{% endif %} {{ block.shopify_attributes }}></div>
   {%- endfor -%}
   <div class="hero-scrim"></div>
 
@@ -235,7 +235,7 @@
       "type": "slide",
       "name": "Slide",
       "settings": [
-        { "type": "text", "id": "image_url", "label": "Image URL" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "header", "content": "Overrides (optional)" },
         { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
         { "type": "text", "id": "heading", "label": "Heading" },

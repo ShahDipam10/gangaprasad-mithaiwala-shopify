@@ -16,12 +16,11 @@
       "blocks": {
         "slide-1": {
           "type": "slide",
-          "settings": { "image_url": "" }
+          "settings": {}
         },
         "slide-2": {
           "type": "slide",
           "settings": {
-            "image_url": "",
             "eyebrow": "Crunchy & Savoury",
             "heading": "Bikaneri-style sev, khakhra and chevdo, roasted fresh",
             "subheading": "No maida shortcuts, no stale oil — our namkeen is fried in small batches the same week it ships.",
@@ -32,7 +31,6 @@
         "slide-3": {
           "type": "slide",
           "settings": {
-            "image_url": "",
             "eyebrow": "Diwali & Rakhi",
             "heading": "Gift hampers your family will actually finish",
             "subheading": "Curated festival boxes, pan-India delivery timed for the occasion — no more regifted tins.",
@@ -43,7 +41,6 @@
         "slide-4": {
           "type": "slide",
           "settings": {
-            "image_url": "",
             "eyebrow": "Our Bestseller",
             "heading": "The Kaju Katli everyone asks us to ship again",
             "subheading": "Real cashew, real silver leaf, nothing stretched — see why it's reordered more than anything else we make.",
