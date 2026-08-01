@@ -391,13 +391,43 @@
         {%- if filter_type == 'horizontal' -%}
           {% comment %} Sorting and product count are the last elements when filter type is horizontal {% endcomment %}
           {%- if enable_sorting -%}
+            {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
+            {%- style -%}
+              .sort-pills { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+              .sort-pills__pill {
+                cursor: pointer;
+                font-family: var(--font-body-family);
+                font-size: 1.2rem;
+                font-weight: 500;
+                padding: 7px 14px;
+                border-radius: 999px;
+                border: 1px solid rgba(var(--color-foreground), 0.3);
+                background: transparent;
+                color: rgb(var(--color-foreground));
+              }
+              .sort-pills__pill[aria-pressed="true"] {
+                background: rgb(var(--color-button));
+                color: rgb(var(--color-button-text));
+                border-color: rgb(var(--color-button));
+                font-weight: 600;
+              }
+              .facet-filters__sort-select-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+            {%- endstyle -%}
             <div class="facet-filters sorting caption">
               <div class="facet-filters__field">
-                <h2 class="facet-filters__label caption-large text-body">
-                  <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
-                </h2>
-                <div class="select">
-                  {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
+                <div class="sort-pills" role="group" aria-label="{{ 'products.facets.sort_by_label' | t }}">
+                  {%- for option in results.sort_options -%}
+                    <button
+                      type="button"
+                      class="sort-pills__pill"
+                      data-sort-value="{{ option.value | escape }}"
+                      aria-pressed="{% if option.value == sort_by %}true{% else %}false{% endif %}"
+                    >
+                      {{ option.name | escape }}
+                    </button>
+                  {%- endfor -%}
+                </div>
+                <div class="select facet-filters__sort-select-visually-hidden">
                   <select
                     name="sort_by"
                     class="facet-filters__sort select__select caption-large"
@@ -415,12 +445,27 @@
                       </option>
                     {%- endfor -%}
                   </select>
-                  <span class="svg-wrapper">
-                    {{- 'icon-caret.svg' | inline_asset_content -}}
-                  </span>
                 </div>
               </div>
             </div>
+            <script>
+              (function () {
+                document.querySelectorAll('.sort-pills').forEach(function (group) {
+                  group.addEventListener('click', function (e) {
+                    var pill = e.target.closest('.sort-pills__pill');
+                    if (!pill) return;
+                    var select = group.closest('.facet-filters__field').querySelector('#SortBy');
+                    if (!select) return;
+                    select.value = pill.dataset.sortValue;
+                    select.dispatchEvent(new Event('input', { bubbles: true }));
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    group.querySelectorAll('.sort-pills__pill').forEach(function (p) {
+                      p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+                    });
+                  });
+                });
+              })();
+            </script>
           {%- endif -%}
           <div class="product-count light" role="status">
             <h2 class="product-count__text text-body">
