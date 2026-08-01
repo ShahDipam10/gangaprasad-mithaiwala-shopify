@@ -3,12 +3,14 @@
     position: relative;
     min-height: 480px;
     display: flex;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: flex-end;
     overflow: hidden;
   }
   #HeroShowcase-{{ section.id }} .hero-slide {
     position: absolute;
     inset: 0;
+    background-color: rgb(var(--color-background));
     background-size: cover;
     background-position: center;
     opacity: 0;
@@ -118,7 +120,7 @@
   @media screen and (min-width: 750px) {
     #HeroShowcase-{{ section.id }} { min-height: 620px; }
     #HeroShowcase-{{ section.id }} .hero-heading { font-size: 4.2rem; }
-    #HeroShowcase-{{ section.id }} .hero-content { padding: 0 20px 76px; margin: 0 auto; }
+    #HeroShowcase-{{ section.id }} .hero-content { padding: 0 20px 40px 48px; }
     #HeroShowcase-{{ section.id }} .hero-arrow { width: 48px; height: 48px; }
   }
 {%- endstyle -%}

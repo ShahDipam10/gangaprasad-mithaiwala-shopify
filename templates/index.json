@@ -16,12 +16,12 @@
       "blocks": {
         "slide-1": {
           "type": "slide",
-          "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951" }
+          "settings": { "image_url": "" }
         },
         "slide-2": {
           "type": "slide",
           "settings": {
-            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/Diwali_Farsan__28Faral_29_-_Gujarati_Style.jpg?v=1785524860",
+            "image_url": "",
             "eyebrow": "Crunchy & Savoury",
             "heading": "Bikaneri-style sev, khakhra and chevdo, roasted fresh",
             "subheading": "No maida shortcuts, no stale oil — our namkeen is fried in small batches the same week it ships.",
@@ -32,7 +32,7 @@
         "slide-3": {
           "type": "slide",
           "settings": {
-            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524865",
+            "image_url": "",
             "eyebrow": "Diwali & Rakhi",
             "heading": "Gift hampers your family will actually finish",
             "subheading": "Curated festival boxes, pan-India delivery timed for the occasion — no more regifted tins.",
@@ -43,7 +43,7 @@
         "slide-4": {
           "type": "slide",
           "settings": {
-            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Picture_of_tasty_Kaju_katli_9b0d744e-80d6-439d-adac-22a010abed1e.jpg?v=1785524951",
+            "image_url": "",
             "eyebrow": "Our Bestseller",
             "heading": "The Kaju Katli everyone asks us to ship again",
             "subheading": "Real cashew, real silver leaf, nothing stretched — see why it's reordered more than anything else we make.",
