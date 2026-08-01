@@ -28,6 +28,17 @@
     padding: 40px 20px 30px;
     max-width: 640px;
   }
+  #HeroShowcase-{{ section.id }} .hero-content-inner {
+    display: none;
+  }
+  #HeroShowcase-{{ section.id }} .hero-content-inner.is-active {
+    display: block;
+    animation: hero-fade-up 0.6s ease;
+  }
+  @keyframes hero-fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
   #HeroShowcase-{{ section.id }} .hero-eyebrow {
     font-family: var(--font-body-family);
     font-size: 12px;
@@ -75,10 +86,40 @@
     width: 22px;
     background: rgb(var(--color-button));
   }
+  #HeroShowcase-{{ section.id }} .hero-arrow {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(42,27,20,0.35);
+    color: #fbf4e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  #HeroShowcase-{{ section.id }} .hero-arrow:hover {
+    background: rgba(42,27,20,0.6);
+  }
+  #HeroShowcase-{{ section.id }} .hero-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+  #HeroShowcase-{{ section.id }} .hero-arrow--prev { left: 12px; }
+  #HeroShowcase-{{ section.id }} .hero-arrow--next { right: 12px; }
+  @media screen and (max-width: 749px) {
+    #HeroShowcase-{{ section.id }} .hero-arrow { display: none; }
+  }
   @media screen and (min-width: 750px) {
     #HeroShowcase-{{ section.id }} { min-height: 620px; }
     #HeroShowcase-{{ section.id }} .hero-heading { font-size: 4.2rem; }
     #HeroShowcase-{{ section.id }} .hero-content { padding: 0 20px 76px; margin: 0 auto; }
+    #HeroShowcase-{{ section.id }} .hero-arrow { width: 48px; height: 48px; }
   }
 {%- endstyle -%}
 
@@ -87,25 +128,47 @@
     <div class="hero-slide{% if forloop.first %} is-active{% endif %}" style="background-image:url('{{ block.settings.image_url }}');" {{ block.shopify_attributes }}></div>
   {%- endfor -%}
   <div class="hero-scrim"></div>
+
+  {%- if section.blocks.size > 1 -%}
+    <button type="button" class="hero-arrow hero-arrow--prev" aria-label="{{ 'sections.slideshow.previous_slide' | t }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button type="button" class="hero-arrow hero-arrow--next" aria-label="{{ 'sections.slideshow.next_slide' | t }}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  {%- endif -%}
+
   <div class="hero-content">
-    {%- if section.settings.eyebrow != blank -%}
-      <div class="hero-eyebrow">{{ section.settings.eyebrow }}</div>
-    {%- endif -%}
-    {%- if section.settings.heading != blank -%}
-      <h1 class="hero-heading">{{ section.settings.heading }}</h1>
-    {%- endif -%}
-    {%- if section.settings.subheading != blank -%}
-      <p class="hero-sub">{{ section.settings.subheading }}</p>
-    {%- endif -%}
-    <div class="hero-actions">
-      {%- if section.settings.button_label != blank -%}
-        <a href="{{ section.settings.button_link }}" class="button">{{ section.settings.button_label }}</a>
-      {%- endif -%}
-      {%- if section.settings.button_label_2 != blank -%}
-        <a href="{{ section.settings.button_link_2 }}" class="button button--secondary">{{ section.settings.button_label_2 }}</a>
-      {%- endif -%}
-    </div>
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign slide_eyebrow = block.settings.eyebrow | default: section.settings.eyebrow
+        assign slide_heading = block.settings.heading | default: section.settings.heading
+        assign slide_subheading = block.settings.subheading | default: section.settings.subheading
+        assign slide_button_label = block.settings.button_label | default: section.settings.button_label
+        assign slide_button_link = block.settings.button_link | default: section.settings.button_link
+      -%}
+      <div class="hero-content-inner{% if forloop.first %} is-active{% endif %}" data-hero-content>
+        {%- if slide_eyebrow != blank -%}
+          <div class="hero-eyebrow">{{ slide_eyebrow }}</div>
+        {%- endif -%}
+        {%- if slide_heading != blank -%}
+          <h1 class="hero-heading">{{ slide_heading }}</h1>
+        {%- endif -%}
+        {%- if slide_subheading != blank -%}
+          <p class="hero-sub">{{ slide_subheading }}</p>
+        {%- endif -%}
+        <div class="hero-actions">
+          {%- if slide_button_label != blank -%}
+            <a href="{{ slide_button_link }}" class="button">{{ slide_button_label }}</a>
+          {%- endif -%}
+          {%- if forloop.first and section.settings.button_label_2 != blank -%}
+            <a href="{{ section.settings.button_link_2 }}" class="button button--secondary">{{ section.settings.button_label_2 }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
   </div>
+
   {%- if section.blocks.size > 1 -%}
     <div class="hero-dots">
       {%- for block in section.blocks -%}
@@ -120,17 +183,23 @@
     connectedCallback() {
       this.slides = Array.from(this.querySelectorAll('.hero-slide'));
       this.dots = Array.from(this.querySelectorAll('.hero-dot'));
+      this.contents = Array.from(this.querySelectorAll('[data-hero-content]'));
+      this.prevBtn = this.querySelector('.hero-arrow--prev');
+      this.nextBtn = this.querySelector('.hero-arrow--next');
       this.index = 0;
       const interval = parseInt(this.dataset.interval, 10) || 4500;
       if (this.slides.length > 1) {
         this.timer = setInterval(() => this.go(this.index + 1), interval);
         this.dots.forEach((dot, i) => dot.addEventListener('click', () => { this.go(i); this.resetTimer(interval); }));
+        if (this.prevBtn) this.prevBtn.addEventListener('click', () => { this.go(this.index - 1); this.resetTimer(interval); });
+        if (this.nextBtn) this.nextBtn.addEventListener('click', () => { this.go(this.index + 1); this.resetTimer(interval); });
       }
     }
     go(i) {
       this.index = (i + this.slides.length) % this.slides.length;
       this.slides.forEach((s, idx) => s.classList.toggle('is-active', idx === this.index));
       this.dots.forEach((d, idx) => d.classList.toggle('is-active', idx === this.index));
+      this.contents.forEach((c, idx) => c.classList.toggle('is-active', idx === this.index));
     }
     resetTimer(interval) {
       clearInterval(this.timer);
@@ -150,12 +219,12 @@
   "class": "section",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "default": "scheme-3", "label": "Color scheme" },
-    { "type": "text", "id": "eyebrow", "default": "Since 1919 · Anand, Gujarat", "label": "Eyebrow" },
-    { "type": "text", "id": "heading", "default": "Three generations of Anand's sweetest mornings", "label": "Heading" },
-    { "type": "textarea", "id": "subheading", "default": "Fresh cow's milk, small daily batches, no preservatives — mithai made the way Gangaprasad started it, a century ago.", "label": "Subheading" },
-    { "type": "text", "id": "button_label", "default": "Shop Sweets", "label": "Primary button label" },
-    { "type": "url", "id": "button_link", "label": "Primary button link" },
-    { "type": "text", "id": "button_label_2", "default": "Festival Specials", "label": "Secondary button label" },
+    { "type": "text", "id": "eyebrow", "default": "Since 1919 · Anand, Gujarat", "label": "Default eyebrow" },
+    { "type": "text", "id": "heading", "default": "Three generations of Anand's sweetest mornings", "label": "Default heading" },
+    { "type": "textarea", "id": "subheading", "default": "Fresh cow's milk, small daily batches, no preservatives — mithai made the way Gangaprasad started it, a century ago.", "label": "Default subheading" },
+    { "type": "text", "id": "button_label", "default": "Shop Sweets", "label": "Default button label" },
+    { "type": "url", "id": "button_link", "label": "Default button link" },
+    { "type": "text", "id": "button_label_2", "default": "Festival Specials", "label": "Secondary button label (slide 1 only)" },
     { "type": "url", "id": "button_link_2", "label": "Secondary button link" },
     { "type": "range", "id": "change_slides_speed", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5, "label": "Change slides every" }
   ],
@@ -164,7 +233,13 @@
       "type": "slide",
       "name": "Slide",
       "settings": [
-        { "type": "text", "id": "image_url", "label": "Image URL" }
+        { "type": "text", "id": "image_url", "label": "Image URL" },
+        { "type": "header", "content": "Overrides (optional)" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "textarea", "id": "subheading", "label": "Subheading" },
+        { "type": "text", "id": "button_label", "label": "Button label" },
+        { "type": "url", "id": "button_link", "label": "Button link" }
       ]
     }
   ],

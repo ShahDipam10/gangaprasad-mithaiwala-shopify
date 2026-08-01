@@ -14,31 +14,76 @@
         "change_slides_speed": 5
       },
       "blocks": {
-        "slide-1": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951" } },
-        "slide-2": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524950" } },
-        "slide-3": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Mithai_for_Diwali_and_other_Festivals_of_India_ed078828-cfea-4429-8d2e-7f65f683b7f3.jpg?v=1785524950" } },
-        "slide-4": { "type": "slide", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Picture_of_tasty_Kaju_katli_9b0d744e-80d6-439d-adac-22a010abed1e.jpg?v=1785524951" } }
+        "slide-1": {
+          "type": "slide",
+          "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951" }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/Diwali_Farsan__28Faral_29_-_Gujarati_Style.jpg?v=1785524860",
+            "eyebrow": "Crunchy & Savoury",
+            "heading": "Bikaneri-style sev, khakhra and chevdo, roasted fresh",
+            "subheading": "No maida shortcuts, no stale oil — our namkeen is fried in small batches the same week it ships.",
+            "button_label": "Shop Namkeen",
+            "button_link": "shopify://collections/namkeen"
+          }
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524865",
+            "eyebrow": "Diwali & Rakhi",
+            "heading": "Gift hampers your family will actually finish",
+            "subheading": "Curated festival boxes, pan-India delivery timed for the occasion — no more regifted tins.",
+            "button_label": "Shop Festival Specials",
+            "button_link": "shopify://collections/festival-specials"
+          }
+        },
+        "slide-4": {
+          "type": "slide",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Picture_of_tasty_Kaju_katli_9b0d744e-80d6-439d-adac-22a010abed1e.jpg?v=1785524951",
+            "eyebrow": "Our Bestseller",
+            "heading": "The Kaju Katli everyone asks us to ship again",
+            "subheading": "Real cashew, real silver leaf, nothing stretched — see why it's reordered more than anything else we make.",
+            "button_label": "Shop Bestsellers",
+            "button_link": "shopify://collections/bestsellers"
+          }
+        }
       },
       "block_order": ["slide-1", "slide-2", "slide-3", "slide-4"]
     },
     "categories": {
-      "type": "collection-list",
+      "type": "category-tiles",
       "settings": {
-        "title": "Shop by Category",
-        "heading_size": "h1",
-        "image_ratio": "portrait",
-        "columns_desktop": 3,
         "color_scheme": "scheme-1",
-        "show_view_all": false,
-        "columns_mobile": "1",
-        "swipe_on_mobile": true,
-        "padding_top": 40,
-        "padding_bottom": 12
+        "heading": "Shop by Category",
+        "padding_top": 44,
+        "padding_bottom": 20
       },
       "blocks": {
-        "cat-sweets": { "type": "featured_collection", "settings": { "collection": "sweets" } },
-        "cat-namkeen": { "type": "featured_collection", "settings": { "collection": "namkeen" } },
-        "cat-festival": { "type": "featured_collection", "settings": { "collection": "festival-specials" } }
+        "cat-sweets": {
+          "type": "tile",
+          "settings": {
+            "collection": "sweets",
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/1280px-Indian_sweets_display.jpg?v=1785524853"
+          }
+        },
+        "cat-namkeen": {
+          "type": "tile",
+          "settings": {
+            "collection": "namkeen",
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/Diwali_Farsan__28Faral_29_-_Gujarati_Style.jpg?v=1785524860"
+          }
+        },
+        "cat-festival": {
+          "type": "tile",
+          "settings": {
+            "collection": "festival-specials",
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524865"
+          }
+        }
       },
       "block_order": ["cat-sweets", "cat-namkeen", "cat-festival"]
     },
@@ -64,25 +109,9 @@
         "show_rating": true,
         "quick_add": "standard",
         "columns_mobile": "2",
-        "padding_top": 12,
+        "padding_top": 40,
         "padding_bottom": 36
       }
-    },
-    "occasions": {
-      "type": "occasion-showcase",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "heading": "Shop by Occasion",
-        "padding_top": 12,
-        "padding_bottom": 40
-      },
-      "blocks": {
-        "occ-wedding": { "type": "occasion", "settings": { "label": "Wedding Gifting", "description": "Curated boxes for the big day.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Picture_of_tasty_Kaju_katli_9b0d744e-80d6-439d-adac-22a010abed1e.jpg?v=1785524951", "link": "shopify://collections/festival-specials" } },
-        "occ-corporate": { "type": "occasion", "settings": { "label": "Corporate Gifting", "description": "Bulk orders, branded packaging.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Mithai_for_Diwali_and_other_Festivals_of_India_ed078828-cfea-4429-8d2e-7f65f683b7f3.jpg?v=1785524950", "link": "shopify://collections/festival-specials" } },
-        "occ-festival": { "type": "occasion", "settings": { "label": "Festival Hampers", "description": "Diwali, Rakhi and more.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Diwali_Mithai_India_b528dbe6-696f-42a3-a175-5a0a72616c64.jpg?v=1785524950", "link": "shopify://collections/festival-specials" } },
-        "occ-everyday": { "type": "occasion", "settings": { "label": "Everyday Treats", "description": "A little sweetness, any day.", "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524950", "link": "shopify://collections/sweets" } }
-      },
-      "block_order": ["occ-wedding", "occ-corporate", "occ-festival", "occ-everyday"]
     },
     "story": {
       "type": "story-split",
@@ -98,7 +127,27 @@
         "padding_top": 40,
         "padding_bottom": 40
       }
+    },
+    "instagram": {
+      "type": "instagram-feed",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "heading": "From our kitchen to your feed",
+        "handle": "@gangaprasadmithaiwala",
+        "profile_url": "https://instagram.com/gangaprasadmithaiwala",
+        "padding_top": 8,
+        "padding_bottom": 44
+      },
+      "blocks": {
+        "p1": { "type": "photo", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_2.jpg?v=1785608371", "alt": "Kaju Katli" } },
+        "p2": { "type": "photo", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_8.jpg?v=1785608747", "alt": "Ratlami Sev" } },
+        "p3": { "type": "photo", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_3.jpg?v=1785608446", "alt": "Kesar Doodh Peda" } },
+        "p4": { "type": "photo", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_7.jpg?v=1785608674", "alt": "Diwali Mithai Gift Hamper" } },
+        "p5": { "type": "photo", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_4.jpg?v=1785608495", "alt": "Motichoor Laddu" } },
+        "p6": { "type": "photo", "settings": { "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images.jpg?v=1785608279", "alt": "Gujarati Chevdo" } }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5", "p6"]
     }
   },
-  "order": ["hero", "categories", "bestsellers", "occasions", "story"]
+  "order": ["hero", "categories", "bestsellers", "story", "instagram"]
 }
