@@ -1,27 +1,5 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero-showcase",
-      "blocks": {
-        "slide1": {
-          "type": "slide",
-          "settings": {
-            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951"
-          }
-        }
-      },
-      "block_order": ["slide1"],
-      "settings": {
-        "color_scheme": "scheme-3",
-        "eyebrow": "Since 1919 · Anand, Gujarat",
-        "heading": "Three generations, one recipe",
-        "subheading": "Gangaprasad Mithaiwala has never chased a franchise or a factory line. Same brass kadhai, same family, same small daily batches — for over a hundred years.",
-        "button_label": "Shop Bestsellers",
-        "button_link": "/collections/bestsellers",
-        "button_label_2": "",
-        "button_link_2": ""
-      }
-    },
     "story": {
       "type": "story-split",
       "settings": {
@@ -54,5 +32,5 @@
       }
     }
   },
-  "order": ["hero", "story", "timeline"]
+  "order": ["story", "timeline"]
 }
