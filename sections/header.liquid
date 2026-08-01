@@ -98,6 +98,18 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .header__search-row {
+    padding-bottom: 12px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .header__search-row {
+      max-width: 44rem;
+      margin: 0 auto;
+      padding-bottom: 16px;
+    }
+  }
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
@@ -142,9 +154,6 @@
         render 'header-drawer'
       endif
 
-      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
-        render 'header-search', input_id: 'Search-In-Modal-1'
-      endif
     -%}
 
     {%- if section.settings.logo_position != 'middle-center' -%}
@@ -247,8 +256,6 @@
           </localization-form>
         {%- endif -%}
       </div>
-      {% render 'header-search', input_id: 'Search-In-Modal' %}
-
       {%- if shop.customer_accounts_enabled -%}
         <a
           href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
@@ -303,6 +310,9 @@
       </a>
     </div>
   </header>
+  <div class="header__search-row page-width">
+    {% render 'header-search-bar', input_id: 'Search-In-Header' %}
+  </div>
 </{{ header_tag }}>
 
 {%- if settings.cart_type == 'notification' -%}

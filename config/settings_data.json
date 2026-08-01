@@ -2,7 +2,7 @@
   "current": "Dawn",
   "presets": {
     "Dawn": {
-      "logo_width": 90,
+      "logo_width": 56,
       "color_schemes": {
         "scheme-1": {
           "settings": {
