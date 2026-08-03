@@ -155,7 +155,11 @@
           <div class="hero-eyebrow">{{ slide_eyebrow }}</div>
         {%- endif -%}
         {%- if slide_heading != blank -%}
-          <h1 class="hero-heading">{{ slide_heading }}</h1>
+          {%- if forloop.first -%}
+            <h1 class="hero-heading">{{ slide_heading }}</h1>
+          {%- else -%}
+            <div class="hero-heading" role="heading" aria-level="2">{{ slide_heading }}</div>
+          {%- endif -%}
         {%- endif -%}
         {%- if slide_subheading != blank -%}
           <p class="hero-sub">{{ slide_subheading }}</p>
