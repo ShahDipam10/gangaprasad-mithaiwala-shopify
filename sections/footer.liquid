@@ -51,6 +51,16 @@
     }
   }
 
+  .footer-block__logo-link {
+    display: inline-block;
+    text-decoration: none;
+  }
+  .footer-block__image-wrapper img,
+  .footer-block__image-wrapper .brand-logo {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
   .footer-block__map {
     border-radius: 6px;
     overflow: hidden;
@@ -154,16 +164,17 @@
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
                       {%- if settings.brand_image == blank -%}
-                        <div class="footer-block__image-wrapper" style="max-width: 90px; margin-bottom: 1rem;">
+                        <a href="{{ routes.root_url }}" class="footer-block__image-wrapper footer-block__logo-link" style="max-width: 90px; margin-bottom: 1rem;">
                           {%- render 'brand-logo', width: 90 -%}
-                        </div>
+                        </a>
                       {%- endif -%}
                       {%- if settings.brand_image != blank -%}
                         {%- assign brand_image_height = settings.brand_image_width
                           | divided_by: settings.brand_image.aspect_ratio
                         -%}
-                        <div
-                          class="footer-block__image-wrapper"
+                        <a
+                          href="{{ routes.root_url }}"
+                          class="footer-block__image-wrapper footer-block__logo-link"
                           style="max-width: min(100%, {{ settings.brand_image_width }}px);"
                         >
                           {{
@@ -175,7 +186,7 @@
                               height: brand_image_height,
                               width: settings.brand_image_width
                           }}
-                        </div>
+                        </a>
                       {%- endif -%}
                       {%- if settings.brand_headline != blank -%}
                         <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
