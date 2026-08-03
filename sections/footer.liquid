@@ -39,6 +39,18 @@
     flex-shrink: 0;
   }
 
+  @media screen and (min-width: 750px) {
+    .footer .footer__blocks-wrapper {
+      display: grid;
+      grid-template-columns: 1.7fr 1fr 1.9fr 1.7fr;
+      column-gap: 32px;
+    }
+    .footer .footer__blocks-wrapper > .footer-block {
+      width: auto;
+      max-width: none;
+    }
+  }
+
   .footer-block__map {
     border-radius: 6px;
     overflow: hidden;
