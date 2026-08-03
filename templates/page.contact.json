@@ -10,7 +10,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Gangaprasad Mithaiwala, since 1919<br>Station Road, near the dairy market, Anand, Gujarat 388001<br>+91 98765 43210 &middot; hello@gangaprasadmithaiwala.example<br>Open daily, 9 AM &ndash; 8:30 PM IST</p>"
+            "text": "<p>Gangaprasad Mithaiwala, since 1919<br>Station Road, near the dairy market, Anand, Gujarat 388001<br><a href=\"tel:+919876543210\">+91 98765 43210</a> &middot; <a href=\"mailto:hello@gangaprasadmithaiwala.example\">hello@gangaprasadmithaiwala.example</a><br>Open daily, 9 AM &ndash; 8:30 PM IST</p>"
           }
         }
       },
