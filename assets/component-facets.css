@@ -164,7 +164,7 @@
 .facets__form {
   display: grid;
   gap: 0 3.5rem;
-  grid-template-columns: minmax(0, 1fr) minmax(0, max-content) minmax(0, max-content);
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, max-content) minmax(0, max-content);
   margin-bottom: 0.5rem;
 }
 
