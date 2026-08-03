@@ -554,7 +554,7 @@
                   {%- endif -%}
                 {%- when 'rating' -%}
                   {%- if product.metafields.reviews.rating.value != blank -%}
-                    <div class="rating-wrapper">
+                    <button type="button" class="rating-wrapper" data-scroll-to-reviews style="background: none; border: none; padding: 0; cursor: pointer; text-align: left;">
                       {% liquid
                         assign rating_decimal = 0
                         assign decimal = product.metafields.reviews.rating.value.rating | modulo: 1
@@ -588,7 +588,7 @@
                           {{ 'accessibility.total_reviews' | t -}}
                         </span>
                       </p>
-                    </div>
+                    </button>
                   {%- endif -%}
                 {%- when 'complementary' -%}
                   <product-recommendations
@@ -916,6 +916,12 @@
       if (!customElements.get('sticky-add-to-cart')) {
         customElements.define('sticky-add-to-cart', StickyAddToCart);
       }
+
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('[data-scroll-to-reviews]')) return;
+        var reviews = document.querySelector('[data-product-reviews-section]');
+        if (reviews) reviews.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
     })();
   </script>
 

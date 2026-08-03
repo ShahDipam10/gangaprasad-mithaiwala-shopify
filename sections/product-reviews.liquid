@@ -31,7 +31,7 @@
   }
 {%- endstyle -%}
 
-<div id="ProductReviews-{{ section.id }}" class="section color-{{ section.settings.color_scheme }}" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+<div id="ProductReviews-{{ section.id }}" data-product-reviews-section class="section color-{{ section.settings.color_scheme }}" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div class="page-width">
     {%- if section.settings.heading != blank -%}
       <h2 class="h2" style="margin: 0 0 8px;">{{ section.settings.heading }}</h2>
