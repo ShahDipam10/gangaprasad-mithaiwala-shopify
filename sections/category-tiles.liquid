@@ -85,7 +85,9 @@
           class="category-tile"
           {{ block.shopify_attributes }}
         >
-          {%- if block.settings.image_url != blank -%}
+          {%- if tile_collection.image != blank -%}
+            <img src="{{ tile_collection.image | image_url: width: 800 }}" alt="{{ tile_collection.title | escape }}" loading="lazy">
+          {%- elsif block.settings.image_url != blank -%}
             <img src="{{ block.settings.image_url }}" alt="{{ tile_collection.title | escape }}" loading="lazy">
           {%- endif -%}
           <div class="category-tile__scrim"></div>
