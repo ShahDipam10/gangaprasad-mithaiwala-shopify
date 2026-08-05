@@ -531,9 +531,13 @@
                   -%}
                 {%- when 'trust_badges_product' -%}
                   <div class="product-trust-badges">
-                    <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> No preservatives</span>
-                    <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> Fresh daily batch</span>
-                    <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> COD available</span>
+                    {%- assign trust_badge_items = block.settings.items | newline_to_br | split: '<br />' -%}
+                    {%- for badge_item in trust_badge_items -%}
+                      {%- assign badge_item = badge_item | strip -%}
+                      {%- if badge_item != blank -%}
+                        <span class="product-trust-badges__item"><span aria-hidden="true">&#10003;</span> {{ badge_item }}</span>
+                      {%- endif -%}
+                    {%- endfor -%}
                   </div>
                 {%- when 'ingredients_shelf_life' -%}
                   {%- if product.metafields.custom.ingredients.value != blank or product.metafields.custom.shelf_life.value != blank -%}
@@ -1415,7 +1419,14 @@
       "type": "trust_badges_product",
       "name": "Trust badges",
       "limit": 1,
-      "settings": []
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "items",
+          "label": "Badges (one per line)",
+          "default": "No preservatives\nFresh daily batch\nCOD available"
+        }
+      ]
     },
     {
       "type": "ingredients_shelf_life",
