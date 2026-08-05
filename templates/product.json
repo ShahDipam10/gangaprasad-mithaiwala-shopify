@@ -13,6 +13,9 @@
         "title": {
           "type": "title"
         },
+        "rating": {
+          "type": "rating"
+        },
         "price": {
           "type": "price"
         },
@@ -33,8 +36,14 @@
             "show_gift_card_recipient": true
           }
         },
+        "trust_badges_product": {
+          "type": "trust_badges_product"
+        },
         "description": {
           "type": "description"
+        },
+        "ingredients_shelf_life": {
+          "type": "ingredients_shelf_life"
         },
         "share": {
           "type": "share",
@@ -46,11 +55,14 @@
       "block_order": [
         "vendor",
         "title",
+        "rating",
         "price",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
+        "trust_badges_product",
         "description",
+        "ingredients_shelf_life",
         "share"
       ],
       "settings": {
@@ -76,6 +88,21 @@
         "padding_bottom": 0
       }
     },
+    "reviews": {
+      "type": "product-reviews",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "heading": "Customer Reviews",
+        "padding_top": 40,
+        "padding_bottom": 20
+      },
+      "blocks": {
+        "r1": { "type": "review", "settings": { "stars": 5, "text": "Tastes exactly like what I remember from my grandmother's kitchen. Ordered for Diwali and it arrived fresh.", "name": "Priya S." } },
+        "r2": { "type": "review", "settings": { "stars": 5, "text": "Best kaju katli I've had outside Anand. Not overly sweet, and the silver leaf is real.", "name": "Rakesh M." } },
+        "r3": { "type": "review", "settings": { "stars": 4, "text": "Ordered a gift hamper for my in-laws — packaging was lovely and everyone loved it.", "name": "Anjali D." } }
+      },
+      "block_order": ["r1", "r2", "r3"]
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -88,9 +115,9 @@
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
+        "show_rating": true,
         "columns_mobile": "2",
-        "padding_top": 36,
+        "padding_top": 20,
         "padding_bottom": 28
       }
     }
@@ -98,6 +125,7 @@
   "order": [
     "main",
     "disclosures",
+    "reviews",
     "related-products"
   ]
 }

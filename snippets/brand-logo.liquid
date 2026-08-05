@@ -1,0 +1,18 @@
+{% comment %}
+  Renders the Gangaprasad Mithaiwala seal logo.
+  Accepts:
+  - width: {Number} logo width in px (optional, default 90)
+  - class: {String} extra classes on the wrapper (optional)
+{% endcomment %}
+{%- liquid
+  assign logo_width = width | default: 90
+  assign logo_height = logo_width
+-%}
+<img
+  src="https://cdn.shopify.com/s/files/1/0697/7198/5009/files/gm-seal-logo_0160a297-80d3-4063-9e68-e05c8566bdd3.svg?v=1785610462"
+  alt="{{ shop.name }}"
+  width="{{ logo_width }}"
+  height="{{ logo_height }}"
+  class="brand-logo {{ class }}"
+  loading="lazy"
+>

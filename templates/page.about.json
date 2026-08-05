@@ -1,0 +1,36 @@
+{
+  "sections": {
+    "story": {
+      "type": "story-split",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Sweets_Mithai_for_Diwali_and_other_Festivals_of_India_ed078828-cfea-4429-8d2e-7f65f683b7f3.jpg?v=1785524950",
+        "image_position": "left",
+        "eyebrow": "How it started",
+        "heading": "A handcart near the dairy market",
+        "body": "<p>In 1919, Gangaprasad Bhai began selling fresh mithai from a handcart in Anand — then a small dairy town in Gujarat, now known the world over as India's “Milk Capital.” His recipes came from his mother's kitchen: real cow's milk, real ghee, nothing stretched or substituted.</p><p>A hundred years and three generations later, the recipes haven't changed. What has: we now ship pan-India, same-day-fresh, so the sweets that once only reached one street in Anand can reach your doorstep.</p><p><em>Family portrait — a real shoot is planned before this store's actual launch; the photo above stands in for it.</em></p>",
+        "button_label": "",
+        "button_link": "",
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "timeline": {
+      "type": "timeline",
+      "blocks": {
+        "c1": { "type": "chapter", "settings": { "year": "1919", "title": "A cart in Anand", "body": "Gangaprasad Bhai starts selling fresh mithai from a handcart near the dairy market, using recipes passed down from his mother." } },
+        "c2": { "type": "chapter", "settings": { "year": "1958", "title": "The first shop", "body": "The family opens a small storefront on the same street, still using the same brass kadhai for the katli." } },
+        "c3": { "type": "chapter", "settings": { "year": "1994", "title": "Third generation", "body": "Grandsons take over daily operations, adding festival hampers and namkeen while keeping every recipe unchanged." } },
+        "c4": { "type": "chapter", "settings": { "year": "Today", "title": "Still handmade, daily", "body": "Every batch is still made fresh each morning in Anand and shipped pan-India, no preservatives, same family recipes." } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "A hundred years, four chapters",
+        "padding_top": 56,
+        "padding_bottom": 64
+      }
+    }
+  },
+  "order": ["story", "timeline"]
+}

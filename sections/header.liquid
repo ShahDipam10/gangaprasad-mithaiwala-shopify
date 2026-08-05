@@ -22,6 +22,27 @@
     margin-left: -1.2rem;
   }
 
+  .header__heading-logo-wrapper img,
+  .header__heading-logo-wrapper .brand-logo {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 749px) {
+    .header__heading-logo-wrapper img,
+    .header__heading-logo-wrapper .brand-logo {
+      width: 42px;
+      height: 42px;
+    }
+
+    header-drawer summary .icon,
+    .drawer__close .icon,
+    .search-modal__close-button .icon {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
@@ -98,6 +119,7 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
 {%- endstyle -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
@@ -172,7 +194,7 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <div class="header__heading-logo-wrapper">{% render 'brand-logo', width: settings.logo_width %}</div>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
@@ -185,7 +207,7 @@
         if section.settings.menu_type_desktop == 'dropdown'
           render 'header-dropdown-menu'
         elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
+          render 'header-mega-menu-custom'
         endif
       endif
     %}
@@ -215,7 +237,7 @@
             }}
           </div>
         {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
+          <div class="header__heading-logo-wrapper">{% render 'brand-logo', width: settings.logo_width %}</div>
         {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}

@@ -1,0 +1,93 @@
+{%- style -%}
+  #ProductReviews-{{ section.id }} .reviews-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  #ProductReviews-{{ section.id }} .review-card {
+    background: rgb(var(--color-background));
+    border: 0.1rem solid rgba(var(--color-foreground), 0.15);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  #ProductReviews-{{ section.id }} .review-card__stars {
+    color: rgb(var(--color-button));
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  #ProductReviews-{{ section.id }} .review-card__text {
+    font-family: var(--font-body-family);
+    font-size: 1.3rem;
+    line-height: 1.6;
+    margin: 0 0 10px;
+  }
+  #ProductReviews-{{ section.id }} .review-card__name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: rgb(var(--color-button));
+  }
+  @media screen and (min-width: 750px) {
+    #ProductReviews-{{ section.id }} .reviews-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+{%- endstyle -%}
+
+<div id="ProductReviews-{{ section.id }}" data-product-reviews-section class="section color-{{ section.settings.color_scheme }}" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h2" style="margin: 0 0 8px;">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if product.metafields.reviews.rating.value != blank -%}
+      <p class="caption-large" style="margin: 0 0 20px; color: rgba(var(--color-foreground), 0.7);">
+        {{ product.metafields.reviews.rating.value }} out of 5 &middot; {{ product.metafields.reviews.rating_count }} reviews
+      </p>
+    {%- endif -%}
+    <div class="reviews-grid">
+      {%- for block in section.blocks -%}
+        <div class="review-card" {{ block.shopify_attributes }}>
+          <div class="review-card__stars" aria-hidden="true">
+            {%- for i in (1..5) -%}
+              {%- if i <= block.settings.stars -%}&#9733;{%- else -%}&#9734;{%- endif -%}
+            {%- endfor -%}
+          </div>
+          <p class="review-card__text">&ldquo;{{ block.settings.text }}&rdquo;</p>
+          <div class="review-card__name">{{ block.settings.name }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product reviews",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "default": "scheme-2", "label": "Color scheme" },
+    { "type": "text", "id": "heading", "default": "Customer Reviews", "label": "Heading" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40, "label": "Padding top" },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 40, "label": "Padding bottom" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "stars", "min": 1, "max": 5, "step": 1, "default": 5, "label": "Stars" },
+        { "type": "textarea", "id": "text", "label": "Review text" },
+        { "type": "text", "id": "name", "label": "Reviewer name" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product reviews",
+      "blocks": [
+        { "type": "review", "settings": { "stars": 5, "text": "Tastes exactly like what I remember from my grandmother's kitchen. Ordered for Diwali and it arrived fresh.", "name": "Priya S." } },
+        { "type": "review", "settings": { "stars": 5, "text": "Best kaju katli I've had outside Anand. Not overly sweet, and the silver leaf is real.", "name": "Rakesh M." } },
+        { "type": "review", "settings": { "stars": 4, "text": "Ordered a gift hamper for my in-laws — packaging was lovely and everyone loved it.", "name": "Anjali D." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

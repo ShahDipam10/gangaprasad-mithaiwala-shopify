@@ -1,75 +1,211 @@
 {
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero": {
+      "type": "hero-showcase",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "slide-1": {
+          "type": "slide",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "image": "shopify://shop_images/Untitled_design_27.png",
+            "eyebrow": "",
+            "heading": "",
+            "subheading": "",
+            "button_label": "",
+            "button_link": ""
           }
         },
-        "button": {
-          "type": "buttons",
+        "slide-2": {
+          "type": "slide",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "image": "shopify://shop_images/images_6ccf01ec-a3a9-42a1-b90b-3954a229c9d6.jpg",
+            "eyebrow": "Crunchy & Savoury",
+            "heading": "Range of Namkeens",
+            "subheading": "No maida shortcuts, no stale oil — our namkeen is fried in small batches the same week it ships.",
+            "button_label": "Shop Namkeen",
+            "button_link": "shopify://collections/namkeen"
+          }
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/traditional-sweets-and-dry-fruits-rakhi-gift-hamper_1.webp",
+            "eyebrow": "Diwali & Rakhi",
+            "heading": "Gift hampers your family will actually finish",
+            "subheading": "Curated festival boxes, pan-India delivery timed for the occasion — no more regifted tins.",
+            "button_label": "Shop Festival Specials",
+            "button_link": "shopify://collections/festival-specials"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "slide-1",
+        "slide-2",
+        "slide-3"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "eyebrow": "Since 1919 · Anand, Gujarat",
+        "heading": "Three generations of Anand's sweetest mornings",
+        "subheading": "Fresh cow's milk, small daily batches, no preservatives — mithai made the way Gangaprasad started it, a century ago.",
+        "button_label": "Shop Sweets",
+        "button_link": "shopify://collections/sweets",
+        "button_label_2": "Festival Specials",
+        "button_link_2": "shopify://collections/festival-specials",
+        "change_slides_speed": 5
       }
     },
-    "featured_collection": {
+    "categories": {
+      "type": "category-tiles",
+      "blocks": {
+        "cat-sweets": {
+          "type": "tile",
+          "settings": {
+            "collection": "sweets",
+            "label": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/1280px-Indian_sweets_display.jpg?v=1785524853"
+          }
+        },
+        "cat-namkeen": {
+          "type": "tile",
+          "settings": {
+            "collection": "namkeen",
+            "label": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/Diwali_Farsan__28Faral_29_-_Gujarati_Style.jpg?v=1785524860"
+          }
+        },
+        "cat-festival": {
+          "type": "tile",
+          "settings": {
+            "collection": "festival-specials",
+            "label": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/collections/1920px-Jalebi_-_Closeup_View_of_Jalebis.jpg?v=1785524865"
+          }
+        }
+      },
+      "block_order": [
+        "cat-sweets",
+        "cat-namkeen",
+        "cat-festival"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Shop by Category",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "bestsellers": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
-        "heading_size": "h2",
+        "collection": "sweets",
+        "products_to_show": 4,
+        "title": "Bestsellers",
+        "heading_size": "h1",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "adapt",
+        "view_all_style": "link",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
         "image_shape": "default",
-        "show_secondary_image": true,
+        "show_secondary_image": false,
         "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "show_rating": true,
+        "quick_add": "standard",
         "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "swipe_on_mobile": true,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "story": {
+      "type": "story-split",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/Street_sweets_mithai_shop_in_Goa_2C_India.jpg?v=1785524951",
+        "image_position": "left",
+        "eyebrow": "Our Story",
+        "heading": "Founded in 1919, in India's dairy capital",
+        "body": "<p>Gangaprasad opened his first mithai counter in Anand's dairy market using milk collected that same morning. Three generations later, the recipe book — and the daily-batch discipline — hasn't changed.</p>",
+        "button_label": "Read our full story",
+        "button_link": "/pages/about",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "instagram": {
+      "type": "instagram-feed",
+      "blocks": {
+        "p1": {
+          "type": "photo",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_2.jpg?v=1785608371",
+            "alt": "Kaju Katli"
+          }
+        },
+        "p2": {
+          "type": "photo",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_8.jpg?v=1785608747",
+            "alt": "Ratlami Sev"
+          }
+        },
+        "p3": {
+          "type": "photo",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_3.jpg?v=1785608446",
+            "alt": "Kesar Doodh Peda"
+          }
+        },
+        "p4": {
+          "type": "photo",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_7.jpg?v=1785608674",
+            "alt": "Diwali Mithai Gift Hamper"
+          }
+        },
+        "p5": {
+          "type": "photo",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images_4.jpg?v=1785608495",
+            "alt": "Motichoor Laddu"
+          }
+        },
+        "p6": {
+          "type": "photo",
+          "settings": {
+            "image_url": "https://cdn.shopify.com/s/files/1/0697/7198/5009/files/images.jpg?v=1785608279",
+            "alt": "Gujarati Chevdo"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6"
+      ],
+      "settings": {
+        "color_scheme": "scheme-2",
+        "heading": "Our sweets and our happy customers",
+        "handle": "@gangaprasadmithaiwala",
+        "profile_url": "https://instagram.com/gangaprasadmithaiwala",
+        "padding_top": 48,
+        "padding_bottom": 48
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero",
+    "categories",
+    "bestsellers",
+    "story",
+    "instagram"
   ]
 }

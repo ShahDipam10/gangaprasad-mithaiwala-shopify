@@ -4,18 +4,40 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "brand": {
+          "type": "brand_information",
+          "settings": { "show_social": true }
+        },
+        "menu": {
+          "type": "link_list",
+          "settings": { "heading": "Quick links", "menu": "footer" }
+        },
+        "trust": {
+          "type": "trust_badges",
+          "settings": {
+            "heading": "Trusted Since 1919",
+            "items": "FSSAI Certified Kitchen\n3rd-Generation Family Run\nFresh Daily Batches, No Preservatives\nPan-India Shipping · COD Available"
+          }
+        },
+        "map": {
+          "type": "illustrative_map",
+          "settings": {
+            "caption": "Gangaprasad Mithaiwala, Anand, Gujarat",
+            "address": "Vidyanagar Road, Anand, Gujarat 388001, India"
+          }
+        }
+      },
+      "block_order": ["brand", "menu", "trust", "map"],
       "settings": {
         "color_scheme": "scheme-3",
-        "newsletter_enable": true,
-        "newsletter_heading": "Get festival offers first",
-        "enable_follow_on_shop": true,
+        "newsletter_enable": false,
+        "enable_follow_on_shop": false,
         "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "payment_enable": true,
-        "show_policy": true,
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "payment_enable": false,
+        "show_policy": false,
         "margin_top": 0,
         "padding_top": 36,
         "padding_bottom": 36

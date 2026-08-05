@@ -27,6 +27,20 @@
   {{ 'component-price.css' | asset_url | stylesheet_tag }}
   {{ 'quick-order-list.css' | asset_url | stylesheet_tag }}
   {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
+  {%- style -%}
+    .card__media--circular .media {
+      background: radial-gradient(circle at 50% 40%, #fff8ec 0%, #f3e7d2 75%);
+    }
+    .card__media--circular img {
+      position: absolute;
+      inset: 10%;
+      width: 80%;
+      height: 80%;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 8px 18px rgba(74, 12, 28, 0.18);
+    }
+  {%- endstyle -%}
 {%- endunless -%}
 {%- if card_product and card_product != empty -%}
   {%- liquid
@@ -60,7 +74,7 @@
           style="--ratio-percent: {{ 1 | divided_by: ratio | times: 100 }}%;"
         >
           {%- if card_product.featured_media -%}
-            <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}">
+            <div class="card__media{% if image_shape and image_shape != 'default' %} shape--{{ image_shape }} color-{{ settings.card_color_scheme }} gradient{% endif %}{% if circular_photo %} card__media--circular{% endif %}">
               <div class="media media--transparent media--hover-effect">
                 {% comment %}theme-check-disable ImgLazyLoading{% endcomment %}
                 <img
@@ -565,6 +579,14 @@
               >
                 {{- 'products.product.on_sale' | t -}}
               </span>
+            {%- endif -%}
+          </div>
+          <div class="card__badge top left">
+            {%- if card_product.tags contains 'bestseller' -%}
+              <span class="badge badge--top-left color-scheme-5">Bestseller</span>
+            {%- endif -%}
+            {%- if card_product.tags contains 'stand-in-photo' -%}
+              <span class="badge badge--top-left color-scheme-4">Stand-in photo</span>
             {%- endif -%}
           </div>
         </div>

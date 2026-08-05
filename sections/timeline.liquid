@@ -1,0 +1,107 @@
+{%- style -%}
+  #Timeline-{{ section.id }} .timeline-heading {
+    text-align: center;
+    margin: 0 0 40px;
+  }
+  #Timeline-{{ section.id }} .timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  #Timeline-{{ section.id }} .timeline-item {
+    border-left: 3px solid rgb(var(--color-button));
+    padding-left: 24px;
+    position: relative;
+  }
+  #Timeline-{{ section.id }} .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 4px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: rgb(var(--color-button));
+  }
+  #Timeline-{{ section.id }} .timeline-year {
+    font-family: var(--font-heading-family);
+    font-style: italic;
+    font-size: 2.2rem;
+    line-height: 1;
+    margin: 0 0 8px;
+    color: rgb(var(--color-button));
+  }
+  #Timeline-{{ section.id }} .timeline-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  #Timeline-{{ section.id }} .timeline-body {
+    font-family: var(--font-body-family);
+    font-size: 1.4rem;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.85;
+  }
+{%- endstyle -%}
+
+<div id="Timeline-{{ section.id }}" class="section color-{{ section.settings.color_scheme }} gradient" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="timeline-heading h1">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    <div class="timeline-list">
+      {%- for block in section.blocks -%}
+        <div class="timeline-item" {{ block.shopify_attributes }}>
+          {%- if block.settings.year != blank -%}
+            <div class="timeline-year">{{ block.settings.year }}</div>
+          {%- endif -%}
+          {%- if block.settings.title != blank -%}
+            <div class="timeline-title">{{ block.settings.title }}</div>
+          {%- endif -%}
+          {%- if block.settings.body != blank -%}
+            <p class="timeline-body">{{ block.settings.body }}</p>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Timeline",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "default": "scheme-1", "label": "Color scheme" },
+    { "type": "text", "id": "heading", "default": "Our journey", "label": "Heading" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48, "label": "Padding top" },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "default": 48, "label": "Padding bottom" }
+  ],
+  "blocks": [
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "textarea", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Timeline",
+      "blocks": [
+        { "type": "chapter", "settings": { "year": "1919", "title": "A cart in Anand", "body": "Gangaprasad Bhai starts selling fresh mithai from a handcart near the dairy market, using recipes passed down from his mother." } },
+        { "type": "chapter", "settings": { "year": "1958", "title": "The first shop", "body": "The family opens a small storefront on the same street, still using the same brass kadhai for the katli." } },
+        { "type": "chapter", "settings": { "year": "1994", "title": "Third generation", "body": "Grandsons take over daily operations, adding festival hampers and namkeen while keeping every recipe unchanged." } },
+        { "type": "chapter", "settings": { "year": "Today", "title": "Still handmade, daily", "body": "Every batch is still made fresh each morning in Anand and shipped pan-India, no preservatives, same family recipes." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

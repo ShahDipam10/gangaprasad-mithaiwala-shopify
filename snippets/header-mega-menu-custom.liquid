@@ -1,0 +1,193 @@
+{% comment %}
+  Custom mega menu: for nav items linking to a collection, shows the
+  collection's image + its top 3 products on hover. Falls back to a plain
+  link for items that don't link to a collection.
+
+  Usage:
+  {% render 'header-mega-menu-custom' %}
+{% endcomment %}
+
+{%- style -%}
+  .mega-menu-custom__content {
+    display: flex;
+    gap: 32px;
+    padding: 24px 0;
+  }
+  .mega-menu-custom__image-wrapper {
+    width: 220px;
+    flex-shrink: 0;
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+  }
+  .mega-menu-custom__image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .mega-menu-custom__image-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(42, 27, 20, 0.85) 100%);
+  }
+  .mega-menu-custom__image-label {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    color: #fbf4e8;
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+  .mega-menu-custom__products {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .mega-menu-custom__product {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .mega-menu-custom__product-media {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .mega-menu-custom__product-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .mega-menu-custom__product-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  .mega-menu-custom__product-price {
+    font-size: 1.2rem;
+    color: rgb(var(--color-foreground));
+    opacity: 0.7;
+  }
+  .mega-menu-custom__view-all {
+    align-self: flex-end;
+    flex-shrink: 0;
+    font-weight: 600;
+    font-size: 1.3rem;
+    white-space: nowrap;
+  }
+
+  .category-flyout {
+    display: flex;
+    min-height: 220px;
+  }
+  .category-flyout__list {
+    list-style: none;
+    margin: 0;
+    padding: 8px 0;
+    width: 200px;
+    flex-shrink: 0;
+    border-right: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+  .category-flyout__item {
+    position: relative;
+  }
+  .category-flyout__item > a {
+    display: block;
+    padding: 12px 24px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    text-decoration: none;
+  }
+  .category-flyout__item:hover > a,
+  .category-flyout__item:focus-within > a {
+    background: rgba(var(--color-foreground), 0.05);
+  }
+  .category-flyout__preview {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    width: 480px;
+    padding: 24px;
+  }
+  .category-flyout__item:hover .category-flyout__preview,
+  .category-flyout__item:focus-within .category-flyout__preview {
+    display: flex;
+  }
+{%- endstyle -%}
+
+<nav class="header__inline-menu">
+  <ul class="list-menu list-menu--inline" role="list">
+    {%- for link in section.settings.menu.links -%}
+      <li>
+        {%- if link.links.size > 0 -%}
+          <header-menu>
+            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+              <summary
+                id="HeaderMenu-{{ link.handle }}"
+                class="header__menu-item list-menu__item link focus-inset"
+              >
+                <span{% if link.child_active %} class="header__active-menu-item"{% endif %}>{{- link.title | escape -}}</span>
+                {{- 'icon-caret.svg' | inline_asset_content -}}
+              </summary>
+              <div
+                id="MegaMenu-Content-{{ forloop.index }}"
+                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                tabindex="-1"
+              >
+                <div class="category-flyout page-width">
+                  <ul class="category-flyout__list">
+                    {%- for child in link.links -%}
+                      <li class="category-flyout__item">
+                        <a href="{{ child.url }}">{{ child.title | escape }}</a>
+                        {%- if child.type == 'collection_link' and child.object and child.object.products.size > 0 -%}
+                          {%- assign menu_collection = child.object -%}
+                          <div class="category-flyout__preview mega-menu-custom__content">
+                            <div class="mega-menu-custom__image-wrapper">
+                              {%- if menu_collection.image != blank -%}
+                                <img src="{{ menu_collection.image | image_url: width: 500 }}" alt="{{ menu_collection.title | escape }}" loading="lazy">
+                              {%- endif -%}
+                              <div class="mega-menu-custom__image-scrim"></div>
+                              <div class="mega-menu-custom__image-label">{{ menu_collection.title }}</div>
+                            </div>
+                            <div class="mega-menu-custom__products">
+                              {%- for product in menu_collection.products limit: 3 -%}
+                                <a href="{{ product.url }}" class="mega-menu-custom__product link">
+                                  <div class="mega-menu-custom__product-media">
+                                    {%- if product.featured_image != blank -%}
+                                      <img src="{{ product.featured_image | image_url: width: 100 }}" alt="{{ product.title | escape }}" loading="lazy">
+                                    {%- endif -%}
+                                  </div>
+                                  <div>
+                                    <div class="mega-menu-custom__product-name">{{ product.title }}</div>
+                                    <div class="mega-menu-custom__product-price">{{ product.price | money }}</div>
+                                  </div>
+                                </a>
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        {%- endif -%}
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </header-menu>
+        {%- else -%}
+          <a
+            id="HeaderMenu-{{ link.handle }}"
+            href="{{ link.url }}"
+            class="header__menu-item list-menu__item link link--text focus-inset"
+            {% if link.current %}aria-current="page"{% endif %}
+          >
+            <span{% if link.current %} class="header__active-menu-item"{% endif %}>{{- link.title | escape -}}</span>
+          </a>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>

@@ -25,6 +25,67 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+  .footer-trust-list__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+    font-size: 1.3rem;
+  }
+
+  .footer-trust-list__check {
+    color: rgb(var(--color-button));
+    flex-shrink: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .footer .footer__blocks-wrapper {
+      display: grid;
+      grid-template-columns: 1.7fr 1fr 1.9fr 1.7fr;
+      column-gap: 32px;
+    }
+    .footer .footer__blocks-wrapper > .footer-block {
+      width: auto;
+      max-width: none;
+    }
+  }
+
+  .footer-block__logo-link {
+    display: inline-block;
+    text-decoration: none;
+  }
+  .footer-block__image-wrapper img,
+  .footer-block__image-wrapper .brand-logo {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .footer-block__map {
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    height: 130px;
+  }
+  .footer-block__map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .footer-map__caption {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(42, 27, 20, 0.85);
+    color: #f3e7d2;
+    font-size: 1rem;
+    padding: 4px 8px;
+    border-radius: 3px;
+    z-index: 1;
+  }
 {%- endstyle -%}
 
 <footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
@@ -103,12 +164,18 @@
                     {%- endif -%}
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
+                      {%- if settings.brand_image == blank -%}
+                        <a href="{{ routes.root_url }}" class="footer-block__image-wrapper footer-block__logo-link" style="max-width: 90px; margin-bottom: 1rem;">
+                          {%- render 'brand-logo', width: 90 -%}
+                        </a>
+                      {%- endif -%}
                       {%- if settings.brand_image != blank -%}
                         {%- assign brand_image_height = settings.brand_image_width
                           | divided_by: settings.brand_image.aspect_ratio
                         -%}
-                        <div
-                          class="footer-block__image-wrapper"
+                        <a
+                          href="{{ routes.root_url }}"
+                          class="footer-block__image-wrapper footer-block__logo-link"
                           style="max-width: min(100%, {{ settings.brand_image_width }}px);"
                         >
                           {{
@@ -120,7 +187,7 @@
                               height: brand_image_height,
                               width: settings.brand_image_width
                           }}
-                        </div>
+                        </a>
                       {%- endif -%}
                       {%- if settings.brand_headline != blank -%}
                         <h2 class="footer-block__heading rte">{{ settings.brand_headline }}</h2>
@@ -152,6 +219,33 @@
                       {%- else -%}
                         {{ 'image' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
                       {%- endif -%}
+                    </div>
+                  {%- when 'trust_badges' -%}
+                    <div class="footer-block__trust-badges">
+                      <ul class="footer-trust-list list-unstyled">
+                        {%- assign trust_lines = block.settings.items | newline_to_br | split: '<br />' -%}
+                        {%- for line in trust_lines -%}
+                          {%- assign trimmed_line = line | strip -%}
+                          {%- if trimmed_line != blank -%}
+                            <li class="footer-trust-list__item">
+                              <span class="footer-trust-list__check" aria-hidden="true">&#10003;</span>
+                              {{ trimmed_line }}
+                            </li>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- when 'illustrative_map' -%}
+                    <div class="footer-block__map">
+                      {%- if block.settings.caption != blank -%}
+                        <div class="footer-map__caption">{{ block.settings.caption }}</div>
+                      {%- endif -%}
+                      <iframe
+                        src="https://www.google.com/maps?q={{ block.settings.address | url_encode }}&output=embed"
+                        title="{{ block.settings.caption | default: 'Store location map' | escape }}"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                      ></iframe>
                     </div>
                 {%- endcase -%}
               </div>
@@ -378,6 +472,43 @@
           "id": "subtext",
           "default": "t:sections.footer.blocks.text.settings.subtext.default",
           "label": "t:sections.footer.blocks.text.settings.subtext.label"
+        }
+      ]
+    },
+    {
+      "type": "trust_badges",
+      "name": "Trust badges",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Trusted Since 1919",
+          "label": "Heading"
+        },
+        {
+          "type": "textarea",
+          "id": "items",
+          "default": "FSSAI Certified Kitchen\n3rd-Generation Family Run\nFresh Daily Batches, No Preservatives\nPan-India Shipping · COD Available",
+          "label": "Items (one per line)"
+        }
+      ]
+    },
+    {
+      "type": "illustrative_map",
+      "name": "Store location map",
+      "settings": [
+        {
+          "type": "text",
+          "id": "caption",
+          "default": "Gangaprasad Mithaiwala, Anand, Gujarat",
+          "label": "Caption"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "default": "Vidyanagar Road, Anand, Gujarat 388001, India",
+          "label": "Address to show on the map",
+          "info": "Used to look up the location on Google Maps. Update this if the store address changes."
         }
       ]
     },
