@@ -22,7 +22,10 @@
         },
         "map": {
           "type": "illustrative_map",
-          "settings": { "caption": "Anand, Gujarat — illustrative map" }
+          "settings": {
+            "caption": "Gangaprasad Mithaiwala, Anand, Gujarat",
+            "address": "Vidyanagar Road, Anand, Gujarat 388001, India"
+          }
         }
       },
       "block_order": ["brand", "menu", "trust", "map"],

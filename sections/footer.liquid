@@ -67,11 +67,12 @@
     position: relative;
     height: 130px;
   }
-  .footer-block__map svg {
+  .footer-block__map iframe {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
+    border: 0;
   }
 
   .footer-map__caption {
@@ -239,18 +240,12 @@
                       {%- if block.settings.caption != blank -%}
                         <div class="footer-map__caption">{{ block.settings.caption }}</div>
                       {%- endif -%}
-                      <svg viewBox="0 0 300 206" preserveAspectRatio="xMidYMid slice" role="img" aria-label="{{ block.settings.caption | default: 'Illustrative map' | escape }}">
-                        <rect x="0" y="0" width="300" height="206" fill="#e8dfc8"></rect>
-                        <path d="M-10 40 L120 20 L180 55 L310 35" stroke="#c9bb92" stroke-width="10" fill="none"></path>
-                        <path d="M-10 120 L100 100 L160 140 L310 115" stroke="#c9bb92" stroke-width="14" fill="none"></path>
-                        <path d="M40 -10 L60 220" stroke="#c9bb92" stroke-width="8" fill="none"></path>
-                        <path d="M230 -10 L210 220" stroke="#c9bb92" stroke-width="8" fill="none"></path>
-                        <text x="130" y="30" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Vidyanagar Rd</text>
-                        <text x="20" y="112" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Station Rd</text>
-                        <text x="220" y="150" font-family="Poppins, sans-serif" font-size="8" fill="#8a7a52">Anand</text>
-                        <path d="M150 90C142 90 135 96.7 135 105c0 10.5 15 27 15 27s15-16.5 15-27c0-8.3-7-15-15-15z" fill="#B8341F"></path>
-                        <circle cx="150" cy="105" r="6" fill="#FBF4E8"></circle>
-                      </svg>
+                      <iframe
+                        src="https://www.google.com/maps?q={{ block.settings.address | url_encode }}&output=embed"
+                        title="{{ block.settings.caption | default: 'Store location map' | escape }}"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                      ></iframe>
                     </div>
                 {%- endcase -%}
               </div>
@@ -500,13 +495,20 @@
     },
     {
       "type": "illustrative_map",
-      "name": "Illustrative map",
+      "name": "Store location map",
       "settings": [
         {
           "type": "text",
           "id": "caption",
-          "default": "Anand, Gujarat — illustrative map",
+          "default": "Gangaprasad Mithaiwala, Anand, Gujarat",
           "label": "Caption"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "default": "Vidyanagar Road, Anand, Gujarat 388001, India",
+          "label": "Address to show on the map",
+          "info": "Used to look up the location on Google Maps. Update this if the store address changes."
         }
       ]
     },
