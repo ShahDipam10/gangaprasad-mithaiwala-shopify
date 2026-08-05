@@ -413,21 +413,88 @@
                 border-color: rgb(var(--color-button));
                 font-weight: 600;
               }
+              .sort-pills__more {
+                position: relative;
+              }
+              .sort-pills__more-toggle {
+                list-style: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+              }
+              .sort-pills__more-toggle::-webkit-details-marker {
+                display: none;
+              }
+              .sort-pills__more[open] .sort-pills__more-toggle {
+                background: rgba(var(--color-foreground), 0.08);
+              }
+              .sort-pills__more-menu {
+                position: absolute;
+                top: calc(100% + 6px);
+                right: 0;
+                z-index: 5;
+                display: flex;
+                flex-direction: column;
+                min-width: 18rem;
+                background: rgb(var(--color-background));
+                border: 1px solid rgba(var(--color-foreground), 0.15);
+                border-radius: 8px;
+                box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+                padding: 6px;
+              }
+              .sort-pills__more-item {
+                cursor: pointer;
+                font-family: var(--font-body-family);
+                font-size: 1.3rem;
+                text-align: left;
+                padding: 8px 10px;
+                border: none;
+                background: transparent;
+                border-radius: 5px;
+                color: rgb(var(--color-foreground));
+              }
+              .sort-pills__more-item:hover {
+                background: rgba(var(--color-foreground), 0.06);
+              }
+              .sort-pills__more-item[aria-pressed="true"] {
+                font-weight: 600;
+                color: rgb(var(--color-button));
+              }
               .facet-filters__sort-select-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
             {%- endstyle -%}
             <div class="facet-filters sorting caption">
               <div class="facet-filters__field">
                 <div class="sort-pills" role="group" aria-label="{{ 'products.facets.sort_by_label' | t }}">
+                  {%- assign featured_sort_values = 'manual,best-selling,price-ascending,price-descending' | split: ',' -%}
                   {%- for option in results.sort_options -%}
-                    <button
-                      type="button"
-                      class="sort-pills__pill"
-                      data-sort-value="{{ option.value | escape }}"
-                      aria-pressed="{% if option.value == sort_by %}true{% else %}false{% endif %}"
-                    >
-                      {{ option.name | escape }}
-                    </button>
+                    {%- if featured_sort_values contains option.value -%}
+                      <button
+                        type="button"
+                        class="sort-pills__pill"
+                        data-sort-value="{{ option.value | escape }}"
+                        aria-pressed="{% if option.value == sort_by %}true{% else %}false{% endif %}"
+                      >
+                        {{ option.name | escape }}
+                      </button>
+                    {%- endif -%}
                   {%- endfor -%}
+                  <details class="sort-pills__more">
+                    <summary class="sort-pills__pill sort-pills__more-toggle">More &darr;</summary>
+                    <div class="sort-pills__more-menu">
+                      {%- for option in results.sort_options -%}
+                        {%- unless featured_sort_values contains option.value -%}
+                          <button
+                            type="button"
+                            class="sort-pills__more-item"
+                            data-sort-value="{{ option.value | escape }}"
+                            aria-pressed="{% if option.value == sort_by %}true{% else %}false{% endif %}"
+                          >
+                            {{ option.name | escape }}
+                          </button>
+                        {%- endunless -%}
+                      {%- endfor -%}
+                    </div>
+                  </details>
                 </div>
                 <div class="select facet-filters__sort-select-visually-hidden">
                   <select
@@ -454,16 +521,23 @@
               (function () {
                 document.querySelectorAll('.sort-pills').forEach(function (group) {
                   group.addEventListener('click', function (e) {
-                    var pill = e.target.closest('.sort-pills__pill');
-                    if (!pill) return;
+                    var item = e.target.closest('.sort-pills__pill:not(.sort-pills__more-toggle), .sort-pills__more-item');
+                    if (!item) return;
                     var select = group.closest('.facet-filters__field').querySelector('#SortBy');
                     if (!select) return;
-                    select.value = pill.dataset.sortValue;
+                    select.value = item.dataset.sortValue;
                     select.dispatchEvent(new Event('input', { bubbles: true }));
                     select.dispatchEvent(new Event('change', { bubbles: true }));
-                    group.querySelectorAll('.sort-pills__pill').forEach(function (p) {
-                      p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+                    group.querySelectorAll('.sort-pills__pill:not(.sort-pills__more-toggle), .sort-pills__more-item').forEach(function (p) {
+                      p.setAttribute('aria-pressed', p === item ? 'true' : 'false');
                     });
+                    var details = group.querySelector('.sort-pills__more');
+                    if (details) details.removeAttribute('open');
+                  });
+                });
+                document.addEventListener('click', function (e) {
+                  document.querySelectorAll('.sort-pills__more[open]').forEach(function (details) {
+                    if (!details.contains(e.target)) details.removeAttribute('open');
                   });
                 });
               })();
