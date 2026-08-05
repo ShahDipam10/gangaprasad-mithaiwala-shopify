@@ -52,15 +52,23 @@
     color: #fff;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
   }
+  #InstagramFeed-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
   @media screen and (min-width: 750px) {
     #InstagramFeed-{{ section.id }} .instagram-feed__grid {
       grid-template-columns: repeat(6, 1fr);
       gap: 10px;
     }
+    #InstagramFeed-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
 {%- endstyle -%}
 
-<div id="InstagramFeed-{{ section.id }}" class="section color-{{ section.settings.color_scheme }} gradient" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+<div id="InstagramFeed-{{ section.id }}" class="section color-{{ section.settings.color_scheme }} gradient">
   <div class="page-width">
     <div class="instagram-feed__header">
       {%- if section.settings.heading != blank -%}

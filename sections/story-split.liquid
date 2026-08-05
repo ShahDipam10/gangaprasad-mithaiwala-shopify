@@ -34,6 +34,10 @@
     line-height: 1.7;
     margin: 0 0 18px;
   }
+  #StorySplit-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
   @media screen and (min-width: 750px) {
     #StorySplit-{{ section.id }} .story-inner {
       flex-direction: row{% if section.settings.image_position == 'right' %}-reverse{% endif %};
@@ -41,10 +45,14 @@
     }
     #StorySplit-{{ section.id }} .story-media,
     #StorySplit-{{ section.id }} .story-text { flex: 1; }
+    #StorySplit-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
 {%- endstyle -%}
 
-<div id="StorySplit-{{ section.id }}" class="section color-{{ section.settings.color_scheme }}" style="padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
+<div id="StorySplit-{{ section.id }}" class="section color-{{ section.settings.color_scheme }}">
   <div class="page-width story-inner">
     <div class="story-media">
       {%- if section.settings.image_url != blank -%}
