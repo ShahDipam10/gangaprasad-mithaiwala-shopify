@@ -28,6 +28,21 @@
     overflow: hidden;
   }
 
+  @media screen and (max-width: 749px) {
+    .header__heading-logo-wrapper img,
+    .header__heading-logo-wrapper .brand-logo {
+      width: 42px;
+      height: 42px;
+    }
+
+    header-drawer summary .icon,
+    .drawer__close .icon,
+    .search-modal__close-button .icon {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
